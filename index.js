@@ -12,8 +12,9 @@ if (program.token) {
   axios.defaults.headers.common['Authorization'] = `bearer ${program.token}`
 }
 
-const USERNAME = 'quezlatch'
-const REPO = 'IsomorphicSafeFable'
+// const USERNAME = 'quezlatch'
+const USERNAME = 'taylorjg'
+// const REPO = 'IsomorphicSafeFable'
 
 // const getPages = async (query, makeNextQuery) => {
 //   const response = await axios.post('', { query })
@@ -59,8 +60,9 @@ const asyncWrapper = async () => {
           repositories(first: 100) {
             edges {
               node {
-                id
+                id,
                 name,
+                isFork
                 languages(first: 100) {
                   edges {
                     size
@@ -75,22 +77,41 @@ const asyncWrapper = async () => {
         }
       }`
 
-    const response = await axios.post('', { query })
-    const repos = response.data.data.user.repositories.edges;
-    repos.forEach(repo => {
-      const repoName = repo.node.name
-      const languageEdges = repo.node.languages.edges
-      const languageNodes = repo.node.languages.nodes
-      const languages = languageNodes.map((languageNode, index) => `${languageNode.name} (${languageEdges[index].size})`).join(', ')
-      console.log(`${repoName}: ${languages}`)
-    });
+    const extractRepoName = repo => repo.node.name
 
-    // const initialQuery = makeRepoQuery()
-    // const results = await getPages(initialQuery, data => {
-    //   const edges = data.user.repositories.edges
-    //   return edges.length ? makeRepoQuery(edges.slice(-1)[0].cursor) : null
-    // })
-    // const repositories = flatten(results.map(data => data.user.repositories.edges))
+    const extractLanguages = repo => {
+      const sizes = R.pluck('size', repo.node.languages.edges)
+      const names = R.pluck('name', repo.node.languages.nodes)
+      return R.zip(sizes, names).map(([size, name]) => ({ size, name }))
+    }
+
+    const response = await axios.post('', { query })
+    const repos = response.data.data.user.repositories.edges
+    const v1 = repos
+      .filter(repo => !repo.isFork)
+      .map(repo => ({
+        repoName: extractRepoName(repo),
+        languages: extractLanguages(repo)
+      }))
+    const v2 = v1.map(repo => ({
+      repoName: repo.repoName,
+      totalSize: R.sum(R.pluck('size', repo.languages)),
+      languages: repo.languages
+    }))
+    const v3 = v2.reduce(
+      (m1, repo) => repo.languages.reduce(
+        (m2, lang) => {
+          const currentSize = m2.get(lang.name) || 0
+          return m2.set(lang.name, currentSize + lang.size)
+        },
+        m1
+      ),
+      new Map()
+    )
+    const totalSize = R.sum(v3.values())
+    const v4 = new Map(Array.from(v3.entries()).map(([k, v]) => [k, (v * 100 / totalSize).toFixed(2)]))
+    const v5 = new Map(Array.from(v4.entries()).map(([k, v]) => [k, `${v}%`]))
+    console.log(`v5 entries: ${JSON.stringify(Array.from(v5.entries()), null, 2)}`)
   }
   catch (err) {
     handleError(err)
