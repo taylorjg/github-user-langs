@@ -1,0 +1,14 @@
+{
+  "name": "github-user-langs",
+  "version": "0.0.1",
+  "description": "Display a GitHub user's programming languages",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Jonathan Taylor",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "commander": "^2.18.0",
+    "ramda": "^0.25.0"
+  }
+}
