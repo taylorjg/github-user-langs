@@ -16,6 +16,12 @@ Shell...............0.255%
 Batchfile...........0.040%
 ```
 
+# TODO
+
+* Create a web app version
+    * include the language colours
+    * proxy GitHub API calls via a web api method to hide the auth token
+
 # Links
 
 * [GraphQL API v4](https://developer.github.com/v4/)
