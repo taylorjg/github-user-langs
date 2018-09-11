@@ -2,25 +2,19 @@ const axios = require('axios')
 const R = require('ramda')
 const program = require('commander')
 
-program
-  .option('-t, --token <token>', 'GitHub API token')
-  .parse(process.argv)
-
 axios.defaults.baseURL = 'https://api.github.com/graphql'
 
-if (program.token) {
-  axios.defaults.headers.common['Authorization'] = `bearer ${program.token}`
-}
-
-// const USERNAME = 'quezlatch'
-const USERNAME = 'taylorjg'
-
-const getAllPagesOfQuery = async (query, makeNextQuery) => {
-  const response = await axios.post(null, { query })
+const getAllPagesOfQuery = async (token, query, makeNextQuery) => {
+  const config = {
+    headers: {
+      authorization: `bearer ${token}`    
+    }    
+  }
+  const response = await axios.post(null, { query }, config)
   const data = response.data.data
   const nextQuery = makeNextQuery(data)
   return nextQuery
-    ? [data, ...await getAllPagesOfQuery(nextQuery, makeNextQuery)]
+    ? [data, ...await getAllPagesOfQuery(token, nextQuery, makeNextQuery)]
     : [data]
 }
 
@@ -47,7 +41,7 @@ const handleError = err => {
   }
 }
 
-const asyncWrapper = async () => {
+const main = async (token, username) => {
   try {
     const makeQuery = username => cursor => {
       const after = cursor ? `, after: "${cursor}"` : ''
@@ -76,7 +70,7 @@ const asyncWrapper = async () => {
       }`
     }
 
-    const makePaginatedQuery = makeQuery(USERNAME)
+    const makePaginatedQuery = makeQuery(username)
 
     const extractRepoEdges = data => data.user.repositories.edges
 
@@ -119,7 +113,7 @@ const asyncWrapper = async () => {
 
     const query = makePaginatedQuery()
 
-    const results = await getAllPagesOfQuery(query, data => {
+    const results = await getAllPagesOfQuery(token, query, data => {
       const edges = data.user.repositories.edges
       if (edges.length) {
         const lastCursor = edges.slice(-1)[0].cursor
@@ -149,4 +143,12 @@ const asyncWrapper = async () => {
   }
 }
 
-asyncWrapper()
+program
+  .arguments('<token> <username>')
+  .action(main)
+  .usage("token username")
+  .parse(process.argv)
+
+if (process.argv.length !== 4) {
+  program.help();
+}
