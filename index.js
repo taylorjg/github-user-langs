@@ -78,6 +78,10 @@ const asyncWrapper = async () => {
 
     const makePaginatedQuery = makeQuery(USERNAME)
 
+    const extractRepoEdges = data => data.user.repositories.edges
+
+    const nonForkedRepos = repo => !repo.node.isFork
+
     const extractLanguages = repo => {
       const edges = repo.node.languages.edges
       const nodes = repo.node.languages.nodes
@@ -87,6 +91,26 @@ const asyncWrapper = async () => {
         color: node.color
       }))
     }
+
+    const langName = lang => lang.name
+
+    const collapseLangs = langs => ({
+      ...langs[0],
+      size: R.sum(R.pluck('size', langs))
+    })
+
+    const calculateGrandTotal = languages =>
+      R.sum(R.pluck('size', languages))
+
+    const withGrandTotal = languages => ({
+      grandTotal: calculateGrandTotal(languages),
+      languages
+    })
+
+    const withPercentages = ({grandTotal, languages}) => R.map(lang => ({
+      ...lang,
+      percentage: lang.size * 100 / grandTotal
+    }), languages)
 
     const printLanguage = lang =>
       console.log(`${lang.name.padEnd(20, '.')}${lang.percentage.toFixed(3)}%`)
@@ -103,47 +127,22 @@ const asyncWrapper = async () => {
       }
     })
 
-    const repos = R.flatten(results.map(data => data.user.repositories.edges))
-    console.log(`Total repo count: ${repos.length}`)
-
-    // filter and reshape: [[{name, size, color}]]
-    const v1 = repos
-      .filter(repo => !repo.node.isFork)
-      .map(extractLanguages)
-    console.log(`Filtered repo count: ${v1.length}`)
-
-    // flatten: [{name, size, color}]
-    const v2 = R.flatten(v1)
-
-    // group by: name => [{name, size, color}]
-    const v3 = R.groupBy(lang => lang.name, v2)
-
-    // reduce: name => {name, size, color}
-    const v4 = R.map(langs => ({
-      ...langs[0],
-      size: R.sum(R.pluck('size', langs))
-    }), v3)
-
-    // [{name, size, color}]
-    const v5 = R.values(v4)
-
-    // { grandTotal: number, languages: [{name, size, color}] }
-    const v6 = R.assoc(
-      'grandTotal',
-      R.sum(R.pluck('size', v5)),
-      { languages: v5 }
+    const pipe = R.pipe(
+      R.map(extractRepoEdges),
+      R.flatten,
+      R.filter(nonForkedRepos),
+      R.map(extractLanguages),
+      R.flatten,
+      R.groupBy(langName),
+      R.map(collapseLangs),
+      R.values,
+      withGrandTotal,
+      withPercentages,
+      R.sort(compareLang),
+      R.forEach(printLanguage)
     )
-
-    // add percentages: [{name, size, color, percentage}]
-    const v7 = R.map(lang => ({
-      ...lang,
-      percentage: lang.size * 100 / v6.grandTotal
-    }), v6.languages)
-
-    v7
-      .sort(compareLang)
-      // .filter(lang => lang.percentage >= 0.5)
-      .forEach(printLanguage)
+    
+    pipe(results)
   }
   catch (err) {
     handleError(err)
