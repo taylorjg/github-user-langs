@@ -109,9 +109,13 @@ const asyncWrapper = async () => {
       new Map()
     )
     const totalSize = R.sum(v3.values())
-    const v4 = new Map(Array.from(v3.entries()).map(([k, v]) => [k, (v * 100 / totalSize).toFixed(2)]))
-    const v5 = new Map(Array.from(v4.entries()).map(([k, v]) => [k, `${v}%`]))
-    console.log(`v5 entries: ${JSON.stringify(Array.from(v5.entries()), null, 2)}`)
+    const v4 = new Map(Array.from(v3.entries()).map(([k, v]) => [k, (v * 100 / totalSize)]))
+    const pairs = Array.from(v4.entries())
+    pairs
+      .filter(([, v]) => v >= 0.5)
+      .forEach(([k, v]) => {
+      console.log(`lang: ${k.padEnd(20, '.')}${v.toFixed(3)}%`)
+    })
   }
   catch (err) {
     handleError(err)
