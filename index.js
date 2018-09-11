@@ -53,7 +53,6 @@ const handleError = err => {
 
 const asyncWrapper = async () => {
   try {
-    // TODO: filter for source repos only ?
     const query = `
       {
         user(login: ${USERNAME}) {
@@ -68,7 +67,8 @@ const asyncWrapper = async () => {
                     size
                   }
                   nodes {
-                    name
+                    name,
+                    color
                   }
                 }
               }
@@ -77,45 +77,58 @@ const asyncWrapper = async () => {
         }
       }`
 
-    const extractRepoName = repo => repo.node.name
-
     const extractLanguages = repo => {
-      const sizes = R.pluck('size', repo.node.languages.edges)
-      const names = R.pluck('name', repo.node.languages.nodes)
-      return R.zip(sizes, names).map(([size, name]) => ({ size, name }))
+      const edges = repo.node.languages.edges
+      const nodes = repo.node.languages.nodes
+      return R.zip(edges, nodes).map(([edge, node]) => ({
+        size: edge.size,
+        name: node.name,
+        color: node.color
+      }))
     }
 
     const response = await axios.post('', { query })
+
+    // raw query results
     const repos = response.data.data.user.repositories.edges
+
+    // filter and reshape: [[{name, size, color}]]
     const v1 = repos
       .filter(repo => !repo.isFork)
-      .map(repo => ({
-        repoName: extractRepoName(repo),
-        languages: extractLanguages(repo)
-      }))
-    const v2 = v1.map(repo => ({
-      repoName: repo.repoName,
-      totalSize: R.sum(R.pluck('size', repo.languages)),
-      languages: repo.languages
-    }))
-    const v3 = v2.reduce(
-      (m1, repo) => repo.languages.reduce(
-        (m2, lang) => {
-          const currentSize = m2.get(lang.name) || 0
-          return m2.set(lang.name, currentSize + lang.size)
-        },
-        m1
-      ),
-      new Map()
-    )
-    const totalSize = R.sum(v3.values())
-    const v4 = new Map(Array.from(v3.entries()).map(([k, v]) => [k, (v * 100 / totalSize)]))
-    const pairs = Array.from(v4.entries())
-    pairs
-      .filter(([, v]) => v >= 0.5)
-      .forEach(([k, v]) => {
-      console.log(`lang: ${k.padEnd(20, '.')}${v.toFixed(3)}%`)
-    })
+      .map(extractLanguages)
+    console.log(`repo count: ${v1.length}`)
+
+    // flatten: [{name, size, color}]
+    const v2 = R.flatten(v1)
+
+    // group by: name => [{name, size, color}]
+    const v3 = R.groupBy(x => x.name, v2)
+
+    // reduce: name => {name, size, color}
+    const v4 = R.map(langs => ({
+      ...langs[0],
+      size: R.sum(R.pluck('size', langs))
+    }), v3)
+
+    // grand total size of all languages across all repos
+    const grandTotal = R.sum(R.pluck('size', R.values(v4)))
+    console.log(`grandTotal: ${grandTotal}`)
+
+    // add percantages: name => {name, size, color, percentage}
+    const v5 = R.map(lang => ({
+      ...lang,
+      percentage: lang.size * 100 / grandTotal
+    }), v4)
+
+    // [{name, size, color, percentage}]
+    const v6 = R.values(v5)
+
+    const printLanguage = lang =>
+      console.log(`${lang.name.padEnd(20, '.')}${lang.percentage.toFixed(3)}%`)
+
+    v6
+      .filter(lang => lang.percentage >= 0.5)
+      .forEach(printLanguage)
   }
   catch (err) {
     handleError(err)
