@@ -1,14 +1,18 @@
 {
   "name": "github-user-langs",
   "version": "0.0.1",
-  "description": "Display a GitHub user's programming languages",
+  "description": "Display a breakdown of languages across a GitHub user's repositories",
   "main": "index.js",
-  "scripts": {},
   "author": "Jonathan Taylor",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
     "commander": "^2.18.0",
     "ramda": "^0.25.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taylorjg/github-user-langs.git"
+  },
+  "homepage": "https://github.com/taylorjg/github-user-langs#readme"
 }
