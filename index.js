@@ -110,23 +110,26 @@ const asyncWrapper = async () => {
       size: R.sum(R.pluck('size', langs))
     }), v3)
 
-    // grand total size of all languages across all repos
-    const grandTotal = R.sum(R.pluck('size', R.values(v4)))
-    console.log(`grandTotal: ${grandTotal}`)
+    // [{name, size, color}]
+    const v5 = R.values(v4)
 
-    // add percantages: name => {name, size, color, percentage}
-    const v5 = R.map(lang => ({
+    // { grandTotal: number, languages: [{name, size, color}] }
+    const v6 = R.assoc(
+      'grandTotal',
+      R.sum(R.pluck('size', v5)),
+      { languages: v5 }
+    )
+
+    // add percentages: [{name, size, color, percentage}]
+    const v7 = R.map(lang => ({
       ...lang,
-      percentage: lang.size * 100 / grandTotal
-    }), v4)
-
-    // [{name, size, color, percentage}]
-    const v6 = R.values(v5)
+      percentage: lang.size * 100 / v6.grandTotal
+    }), v6.languages)
 
     const printLanguage = lang =>
       console.log(`${lang.name.padEnd(20, '.')}${lang.percentage.toFixed(3)}%`)
 
-    v6
+    v7
       .filter(lang => lang.percentage >= 0.5)
       .forEach(printLanguage)
   }
