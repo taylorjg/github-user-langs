@@ -14,19 +14,15 @@ if (program.token) {
 
 // const USERNAME = 'quezlatch'
 const USERNAME = 'taylorjg'
-// const REPO = 'IsomorphicSafeFable'
 
-// const getPages = async (query, makeNextQuery) => {
-//   const response = await axios.post('', { query })
-//   const data = response.data.data
-//   const nextQuery = makeNextQuery(data)
-//   if (nextQuery) {
-//     return [data, ...await getPages(nextQuery, makeNextQuery)]
-//   }
-//   else {
-//     return [data]
-//   }
-// }
+const getAllPagesOfQuery = async (query, makeNextQuery) => {
+  const response = await axios.post(null, { query })
+  const data = response.data.data
+  const nextQuery = makeNextQuery(data)
+  return nextQuery
+    ? [data, ...await getAllPagesOfQuery(nextQuery, makeNextQuery)]
+    : [data]
+}
 
 const handleError = err => {
   if (err.response) {
@@ -53,29 +49,34 @@ const handleError = err => {
 
 const asyncWrapper = async () => {
   try {
-    const query = `
-      {
-        user(login: ${USERNAME}) {
-          repositories(first: 100) {
+    const makeQuery = username => cursor => {
+      const after = cursor ? `, after: "${cursor}"` : ''
+      return `{
+        user(login: ${username}) {
+          repositories(first: 100 ${after}) {
             edges {
               node {
-                id,
-                name,
+                id
+                name
                 isFork
                 languages(first: 100) {
                   edges {
                     size
                   }
                   nodes {
-                    name,
+                    name
                     color
                   }
                 }
               }
+              cursor
             }
           }
         }
       }`
+    }
+
+    const makePaginatedQuery = makeQuery(USERNAME)
 
     const extractLanguages = repo => {
       const edges = repo.node.languages.edges
@@ -87,22 +88,35 @@ const asyncWrapper = async () => {
       }))
     }
 
-    const response = await axios.post('', { query })
+    const printLanguage = lang =>
+      console.log(`${lang.name.padEnd(20, '.')}${lang.percentage.toFixed(3)}%`)
 
-    // raw query results
-    const repos = response.data.data.user.repositories.edges
+    const compareLang = (lang1, lang2) => lang2.percentage - lang1.percentage
+
+    const query = makePaginatedQuery()
+
+    const results = await getAllPagesOfQuery(query, data => {
+      const edges = data.user.repositories.edges
+      if (edges.length) {
+        const lastCursor = edges.slice(-1)[0].cursor
+        return makePaginatedQuery(lastCursor)
+      }
+    })
+
+    const repos = R.flatten(results.map(data => data.user.repositories.edges))
+    console.log(`Total repo count: ${repos.length}`)
 
     // filter and reshape: [[{name, size, color}]]
     const v1 = repos
-      .filter(repo => !repo.isFork)
+      .filter(repo => !repo.node.isFork)
       .map(extractLanguages)
-    console.log(`repo count: ${v1.length}`)
+    console.log(`Filtered repo count: ${v1.length}`)
 
     // flatten: [{name, size, color}]
     const v2 = R.flatten(v1)
 
     // group by: name => [{name, size, color}]
-    const v3 = R.groupBy(x => x.name, v2)
+    const v3 = R.groupBy(lang => lang.name, v2)
 
     // reduce: name => {name, size, color}
     const v4 = R.map(langs => ({
@@ -126,11 +140,9 @@ const asyncWrapper = async () => {
       percentage: lang.size * 100 / v6.grandTotal
     }), v6.languages)
 
-    const printLanguage = lang =>
-      console.log(`${lang.name.padEnd(20, '.')}${lang.percentage.toFixed(3)}%`)
-
     v7
-      .filter(lang => lang.percentage >= 0.5)
+      .sort(compareLang)
+      // .filter(lang => lang.percentage >= 0.5)
       .forEach(printLanguage)
   }
   catch (err) {
