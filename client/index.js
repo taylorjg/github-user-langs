@@ -3,10 +3,12 @@ $(() => {
   const $submit = $('#submit')
   const $tableBody = $('#results tbody')
   $submit.on('click', e => {
+    $submit.prop('disabled', true)
     e.preventDefault()
     const username = $username.val()
     $.get(`/api/userLangs/${username}`)
       .done(addRowsToResultsTable($tableBody))
+      .always(() => { $submit.prop('disabled', false) })
   })
 })
 
