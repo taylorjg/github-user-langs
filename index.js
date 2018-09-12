@@ -72,11 +72,13 @@ const main = async (token, username) => {
 
     const makePaginatedQuery = makeQuery(username)
 
-    const extractRepoEdges = data => data.user.repositories.edges
+    const extractRepoEdges = data =>
+      data.user.repositories.edges
 
-    const nonForkedRepos = repo => !repo.node.isFork
+    const nonForkedRepos = repo =>
+      !repo.node.isFork
 
-    const extractLanguages = repo => {
+    const extractLangs = repo => {
       const edges = repo.node.languages.edges
       const nodes = repo.node.languages.nodes
       return R.zip(edges, nodes).map(([edge, node]) => ({
@@ -86,34 +88,51 @@ const main = async (token, username) => {
       }))
     }
 
-    const langName = lang => lang.name
+    const langName = lang =>
+      lang.name
 
-    const collapseLangs = langs => ({
+    const reduceLangs = langs => ({
       ...langs[0],
       size: R.sum(R.pluck('size', langs))
     })
 
-    const calculateGrandTotal = languages =>
-      R.sum(R.pluck('size', languages))
+    const calculateGrandTotal = langs =>
+      R.sum(R.pluck('size', langs))
 
-    const withGrandTotal = languages => ({
-      grandTotal: calculateGrandTotal(languages),
-      languages
+    const withGrandTotal = langs => ({
+      grandTotal: calculateGrandTotal(langs),
+      langs
     })
 
-    const withPercentages = ({grandTotal, languages}) => R.map(lang => ({
+    const addPercentages = ({grandTotal, langs}) => R.map(lang => ({
       ...lang,
       percentage: lang.size * 100 / grandTotal
-    }), languages)
+    }), langs)
 
-    const printLanguage = lang =>
+    const compareLang = (lang1, lang2) =>
+      lang2.percentage - lang1.percentage
+
+    const printLang = lang =>
       console.log(`${lang.name.padEnd(20, '.')}${lang.percentage.toFixed(3)}%`)
 
-    const compareLang = (lang1, lang2) => lang2.percentage - lang1.percentage
-
+    const pipe = R.pipe(
+      R.map(extractRepoEdges),
+      R.flatten,
+      R.filter(nonForkedRepos),
+      R.map(extractLangs),
+      R.flatten,
+      R.groupBy(langName),
+      R.values,
+      R.map(reduceLangs),
+      withGrandTotal,
+      addPercentages,
+      R.sort(compareLang),
+      R.forEach(printLang)
+    )
+    
     const query = makePaginatedQuery()
 
-    const results = await getAllPagesOfQuery(token, query, data => {
+    const queryResults = await getAllPagesOfQuery(token, query, data => {
       const edges = data.user.repositories.edges
       if (edges.length) {
         const lastCursor = edges.slice(-1)[0].cursor
@@ -121,22 +140,7 @@ const main = async (token, username) => {
       }
     })
 
-    const pipe = R.pipe(
-      R.map(extractRepoEdges),
-      R.flatten,
-      R.filter(nonForkedRepos),
-      R.map(extractLanguages),
-      R.flatten,
-      R.groupBy(langName),
-      R.map(collapseLangs),
-      R.values,
-      withGrandTotal,
-      withPercentages,
-      R.sort(compareLang),
-      R.forEach(printLanguage)
-    )
-    
-    pipe(results)
+    pipe(queryResults)
   }
   catch (err) {
     handleError(err)
