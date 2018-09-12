@@ -12,7 +12,7 @@
     "ramda": "^0.25.0"
   },
   "scripts": {
-    "start": "mkdir server/public && cp client/*.* server/public && node server"
+    "start": "mkdir -p server/public && cp client/*.* server/public && node server"
   },
   "repository": {
     "type": "git",
