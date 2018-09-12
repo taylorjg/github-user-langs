@@ -1,8 +1,17 @@
 const program = require('commander')
 const github = require('../github')
 
+const formatPercentageOptions = {
+  minimumIntegerDigits: 2,
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3
+}
+
+const formatPercentage = percentage =>
+  `${percentage.toLocaleString(undefined, formatPercentageOptions)}%`
+
 const printLang = lang =>
-  console.log(`${lang.name.padEnd(20, '.')}${lang.percentage.toFixed(3)}%`)
+  console.log(`${lang.name.padEnd(20, '.')}${formatPercentage(lang.percentage)}`)
 
 const main = async (token, username) => {
   try {
