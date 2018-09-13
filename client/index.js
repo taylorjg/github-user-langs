@@ -14,7 +14,7 @@ $(() => {
           // TOD: display 'message' in an error panel
           // const message = results.failure.errors[0].message
         } else {
-          addRowsToResultsTable($tableBody)(results.success)
+          addRowsToResultsTable($tableBody, results.success)
         }
       })
       .always(() => { $submit.prop('disabled', false) })
@@ -29,8 +29,10 @@ $(() => {
   }
 })
 
-const addRowsToResultsTable = $tableBody => langs =>
+const addRowsToResultsTable = ($tableBody, langs) => {
+  $tableBody.empty()
   langs.forEach(addRowToResultsTable($tableBody))
+}
 
 const addRowToResultsTable = $tableBody => lang =>
   $tableBody.append($('<tr>', {
