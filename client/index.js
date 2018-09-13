@@ -3,7 +3,9 @@ import URLSearchParams from 'url-search-params'
 $(() => {
   const $username = $('#username')
   const $submit = $('#submit')
+  const $clear = $('#clear')
   const $tableBody = $('#results tbody')
+
   $submit.on('click', e => {
     $submit.prop('disabled', true)
     e.preventDefault()
@@ -18,6 +20,11 @@ $(() => {
         }
       })
       .always(() => { $submit.prop('disabled', false) })
+  })
+
+  $clear.on('click', () => {
+    $username.val('')
+    $tableBody.empty()
   })
 
   const searchParams = new URLSearchParams(window.location.search)
