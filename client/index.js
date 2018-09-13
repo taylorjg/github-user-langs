@@ -5,21 +5,44 @@ $(() => {
   const $submit = $('#submit')
   const $clear = $('#clear')
   const $tableBody = $('#results tbody')
+  const $errorPanel = $('#errorPanel')
+  const $errorMessage = $('#errorMessage')
+
+  const showErrorPanel = errorMessage => {
+    $errorMessage.html(errorMessage)
+    $errorPanel.removeClass('hidden').show()
+  }
+
+  const showErrorPanelWithXhr = xhr => {
+    const errorMessage = xhr && xhr.status && xhr.statusText
+      ? `${xhr.status}: ${xhr.statusText}`
+      : 'Something went wrong!'
+    showErrorPanel(errorMessage)
+  }
+
+  const hideErrorPanel = () =>
+    $errorPanel.hide()
+
+  $('button', $errorPanel).on('click', hideErrorPanel)
+
+  const enableSubmitButton = () => $submit.prop('disabled', false)
+  const disableSubmitButton = () => $submit.prop('disabled', true)
 
   $submit.on('click', e => {
-    $submit.prop('disabled', true)
+    disableSubmitButton()
     e.preventDefault()
     const username = $username.val()
     $.get(`/api/userLangs/${username}`)
       .done(results => {
         if (results.failure) {
-          // TOD: display 'message' in an error panel
-          // const message = results.failure.errors[0].message
+          const message = results.failure.errors[0].message
+          showErrorPanel(message)
         } else {
           addRowsToResultsTable($tableBody, results.success)
         }
       })
-      .always(() => { $submit.prop('disabled', false) })
+      .fail(showErrorPanelWithXhr)
+      .always(enableSubmitButton)
   })
 
   $clear.on('click', () => {

@@ -2,6 +2,11 @@ form {
   margin-top: 20px;
 }
 
+.alert.alert-danger {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
 #username {
   width: 300px;
 }

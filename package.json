@@ -1,6 +1,6 @@
 {
   "name": "github-user-langs",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Display a breakdown of languages across a GitHub user's repositories",
   "main": "index.js",
   "author": "Jonathan Taylor",
