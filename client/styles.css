@@ -19,7 +19,8 @@ form {
 
 .language-color {
   line-height: 8px;
-  text-indent: -9999px;
+  font-size: smaller;
+  font-style: italic;
 }
 
 #results td:last-child {

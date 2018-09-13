@@ -90,9 +90,9 @@ const addRowToResultsTable = $tableBody => lang =>
         }),
         $('<td>', {
           html: $('<div>', {
-            style: `width: ${lang.percentage}%; background-color: ${lang.color};`,
+            style: lang.color ? `width: ${lang.percentage}%; background-color: ${lang.color};` : '',
             'class': 'language-color',
-            html: '&nbsp;'
+            html: lang.color ? '&nbsp;' : '(none)'
           })
         })
       ]
