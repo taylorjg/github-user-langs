@@ -10,7 +10,7 @@ const getAllPagesOfQuery = async (token, query, makeNextQuery) => {
     }
   }
   const response = await axios.post(null, { query }, config)
-  const data = response.data.data
+  const data = response.data
   const nextQuery = makeNextQuery(data)
   return nextQuery
     ? [data, ...await getAllPagesOfQuery(token, nextQuery, makeNextQuery)]
@@ -48,8 +48,8 @@ const getUserLangs = async (token, username) => {
 
   const paginatedQueryBuilder = queryBuilder(username)
 
-  const extractRepoEdges = data =>
-    data.user.repositories.edges
+  const extractRepoEdges = response =>
+    response.data.user.repositories.edges
 
   const nonForkedRepos = repo =>
     !repo.node.isFork
@@ -104,8 +104,16 @@ const getUserLangs = async (token, username) => {
 
   const query = paginatedQueryBuilder()
 
-  const queryResults = await getAllPagesOfQuery(token, query, data => {
-    const edges = data.user.repositories.edges
+  const queryResults = await getAllPagesOfQuery(token, query, response => {
+    if (response.errors) {
+      const message = response.errors[0].message
+      const type = response.errors[0].type
+      type
+        ? console.log(`[${username}] ERROR - message: ${message}; type: ${type}`)
+        : console.log(`[${username}] ERROR - message: ${message}`)
+      throw new Error(message)
+    }
+    const edges = response.data.user.repositories.edges
     if (edges.length) {
       const lastCursor = edges.slice(-1)[0].cursor
       return paginatedQueryBuilder(lastCursor)
