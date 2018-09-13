@@ -38,6 +38,7 @@ $(() => {
           const message = results.failure.errors[0].message
           showErrorPanel(message)
         } else {
+          hideErrorPanel()
           addRowsToResultsTable($tableBody, results.success)
         }
       })
