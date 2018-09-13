@@ -12,6 +12,7 @@ form {
 }
 
 .version {
+  margin-top: 10px;
   font-size: smaller;
   font-style: italic;
 }

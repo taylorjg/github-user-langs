@@ -7,6 +7,7 @@ $(() => {
   const $tableBody = $('#results tbody')
   const $errorPanel = $('#errorPanel')
   const $errorMessage = $('#errorMessage')
+  const $spinners = $('th img')
 
   const showErrorPanel = errorMessage => {
     $errorMessage.html(errorMessage)
@@ -23,14 +24,22 @@ $(() => {
   const hideErrorPanel = () =>
     $errorPanel.hide()
 
-  $('button', $errorPanel).on('click', hideErrorPanel)
+  const enableSubmitButton = () =>
+    $submit.prop('disabled', false)
 
-  const enableSubmitButton = () => $submit.prop('disabled', false)
-  const disableSubmitButton = () => $submit.prop('disabled', true)
+  const disableSubmitButton = () =>
+    $submit.prop('disabled', true)
+
+  const showSpinners = () =>
+    $spinners.show().removeClass('hidden')
+
+  const hideSpinners = () =>
+    $spinners.hide()
 
   $submit.on('click', e => {
     e.preventDefault()
     disableSubmitButton()
+    showSpinners()
     const username = $username.val()
     $.get(`/api/userLangs/${username}`)
       .done(results => {
@@ -45,12 +54,15 @@ $(() => {
       })
       .fail(showErrorPanelWithXhr)
       .always(enableSubmitButton)
+      .always(hideSpinners)
   })
 
   $clear.on('click', () => {
     $username.val('')
     $tableBody.empty()
   })
+
+  $('button', $errorPanel).on('click', hideErrorPanel)
 
   const searchParams = new URLSearchParams(window.location.search)
   const username = searchParams.get('username')
