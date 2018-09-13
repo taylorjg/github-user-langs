@@ -5,3 +5,8 @@ form {
 #username {
   width: 300px;
 }
+
+.version {
+  font-size: smaller;
+  font-style: italic;
+}

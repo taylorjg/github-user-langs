@@ -1,3 +1,5 @@
+import URLSearchParams from 'url-search-params'
+
 $(() => {
   const $username = $('#username')
   const $submit = $('#submit')
@@ -10,6 +12,14 @@ $(() => {
       .done(addRowsToResultsTable($tableBody))
       .always(() => { $submit.prop('disabled', false) })
   })
+
+  const searchParams = new URLSearchParams(window.location.search)
+  const username = searchParams.get('username')
+  if (username) {
+    $username.val(username)
+    $submit.focus()
+    $submit.trigger('click')
+  }
 })
 
 const addRowsToResultsTable = $tableBody => langs =>
