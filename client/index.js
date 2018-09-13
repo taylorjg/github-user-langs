@@ -9,7 +9,14 @@ $(() => {
     e.preventDefault()
     const username = $username.val()
     $.get(`/api/userLangs/${username}`)
-      .done(addRowsToResultsTable($tableBody))
+      .done(results => {
+        if (results.failure) {
+          // TOD: display 'message' in an error panel
+          // const message = results.failure.errors[0].message
+        } else {
+          addRowsToResultsTable($tableBody)(results.success)
+        }
+      })
       .always(() => { $submit.prop('disabled', false) })
   })
 

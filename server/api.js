@@ -1,5 +1,6 @@
 const express = require('express')
 const github = require('../github')
+const R = require('ramda')
 
 const buildRouter = token => {
 
@@ -7,9 +8,18 @@ const buildRouter = token => {
     const username = req.params.username
     try {
       const results = await github.getUserLangs(token, username)
+      if (results.success) {
+        const langs = results.success
+        const langsLength = langs.length
+        const langsList = R.pluck('name', langs).join(', ')
+        console.log(`[${username}] INFO | #langs: ${langsLength}; langs: ${langsList}`)
+      } else {
+        console.log(`[${username}] ERROR | ${JSON.stringify(results)}`)
+      }
       res.json(results)
     }
     catch (error) {
+      console.log(`[${username}] ERROR | ${error.stack}`)
       res.status(500).send(error.message || 'Internal Server Error')
     }
   }

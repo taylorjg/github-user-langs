@@ -105,22 +105,18 @@ const getUserLangs = async (token, username) => {
   const query = paginatedQueryBuilder()
 
   const queryResults = await getAllPagesOfQuery(token, query, response => {
-    if (response.errors) {
-      const message = response.errors[0].message
-      const type = response.errors[0].type
-      type
-        ? console.log(`[${username}] ERROR - message: ${message}; type: ${type}`)
-        : console.log(`[${username}] ERROR - message: ${message}`)
-      throw new Error(message)
-    }
-    const edges = response.data.user.repositories.edges
-    if (edges.length) {
-      const lastCursor = edges.slice(-1)[0].cursor
+    const repos = R.pathOr([], ['data', 'user', 'repositories', 'edges'], response)
+    if (repos.length) {
+      const lastCursor = repos.slice(-1)[0].cursor
       return paginatedQueryBuilder(lastCursor)
     }
   })
 
-  return pipe(queryResults)
+  const errors = queryResults[0].errors
+
+  return errors
+    ? { failure: { errors } }
+    : { success: pipe(queryResults) }
 }
 
 module.exports = {

@@ -16,7 +16,11 @@ const printLang = lang =>
 const main = async (token, username) => {
   try {
     const results = await github.getUserLangs(token, username)
-    results.forEach(printLang)
+    if (results.failure) {
+      console.log(`ERROR: ${results.failure.errors[0].message}`)
+    } else {
+      results.success.forEach(printLang)
+    }
   }
   catch (error) {
     console.log(`ERROR: ${error}`)
