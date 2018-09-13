@@ -29,8 +29,8 @@ $(() => {
   const disableSubmitButton = () => $submit.prop('disabled', true)
 
   $submit.on('click', e => {
-    disableSubmitButton()
     e.preventDefault()
+    disableSubmitButton()
     const username = $username.val()
     $.get(`/api/userLangs/${username}`)
       .done(results => {
@@ -41,6 +41,7 @@ $(() => {
           hideErrorPanel()
           addRowsToResultsTable($tableBody, results.success)
         }
+        $username.focus()
       })
       .fail(showErrorPanelWithXhr)
       .always(enableSubmitButton)
@@ -66,12 +67,24 @@ const addRowsToResultsTable = ($tableBody, langs) => {
 }
 
 const addRowToResultsTable = $tableBody => lang =>
-  $tableBody.append($('<tr>', {
-    html: [
-      $('<td>', { html: lang.name }),
-      $('<td>', { html: formatPercentage(lang.percentage) })
-    ]
-  }))
+  $tableBody.append(
+    $('<tr>', {
+      html: [
+        $('<td>', {
+          html: lang.name
+        }),
+        $('<td>', {
+          html: formatPercentage(lang.percentage)
+        }),
+        $('<td>', {
+          html: $('<div>', {
+            style: `width: ${lang.percentage}%; background-color: ${lang.color};`,
+            'class': 'language-color',
+            html: '&nbsp;'
+          })
+        })
+      ]
+    }))
 
 const formatPercentageOptions = {
   minimumIntegerDigits: 2,

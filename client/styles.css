@@ -15,3 +15,12 @@ form {
   font-size: smaller;
   font-style: italic;
 }
+
+.language-color {
+  line-height: 8px;
+  text-indent: -9999px;
+}
+
+#results td:last-child {
+  vertical-align: middle;
+}
