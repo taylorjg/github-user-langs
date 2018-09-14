@@ -95,11 +95,9 @@ const columnContents2 = lang =>
   formatPercentage(lang.percentage)
 
 const columnContents3 = lang =>
-  lang.color
-    ? $('<div>', { html: lang.name })
-      .css('width', `${lang.percentage}%`)
-      .css('background-color', lang.color)
-    : $('<span>', { html: '(none)' })
+  $('<div>', { html: lang.name })
+    .css('width', `${lang.percentage}%`)
+    .css('background-color', lang.color || '#ccc')
 
 const formatPercentageOptions = {
   minimumIntegerDigits: 2,

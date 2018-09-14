@@ -29,6 +29,9 @@ const getUserLangs = async (token, username) => {
               id
               name
               isFork
+              owner {
+                login
+              }
               languages(first: 100) {
                 edges {
                   size
@@ -51,8 +54,11 @@ const getUserLangs = async (token, username) => {
   const extractRepos = response =>
     response.data.user.repositories.edges
 
-  const sourceRepos = repo =>
+  const sourcesRepos = repo =>
     !repo.node.isFork
+
+  const ownedRepos = repo =>
+    repo.node.owner.login.toLowerCase() === username.toLowerCase()
 
   const extractLangs = repo => {
     const edges = repo.node.languages.edges
@@ -91,7 +97,8 @@ const getUserLangs = async (token, username) => {
   const pipe = R.pipe(
     R.map(extractRepos),
     R.flatten,
-    R.filter(sourceRepos),
+    R.filter(sourcesRepos),
+    R.filter(ownedRepos),
     R.map(extractLangs),
     R.flatten,
     R.groupBy(langName),

@@ -25,8 +25,3 @@ form {
 #results td:last-child div {
   text-indent: -9999px;
 }
-
-#results td:last-child span {
-  font-size: smaller;
-  font-style: italic;
-}
