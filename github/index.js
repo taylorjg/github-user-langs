@@ -48,10 +48,10 @@ const getUserLangs = async (token, username) => {
 
   const paginatedQueryBuilder = queryBuilder(username)
 
-  const extractRepoEdges = response =>
+  const extractRepos = response =>
     response.data.user.repositories.edges
 
-  const nonForkedRepos = repo =>
+  const sourceRepos = repo =>
     !repo.node.isFork
 
   const extractLangs = repo => {
@@ -89,9 +89,9 @@ const getUserLangs = async (token, username) => {
     lang2.percentage - lang1.percentage
 
   const pipe = R.pipe(
-    R.map(extractRepoEdges),
+    R.map(extractRepos),
     R.flatten,
-    R.filter(nonForkedRepos),
+    R.filter(sourceRepos),
     R.map(extractLangs),
     R.flatten,
     R.groupBy(langName),
