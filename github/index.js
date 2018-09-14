@@ -4,17 +4,36 @@ const R = require('ramda')
 axios.defaults.baseURL = 'https://api.github.com/graphql'
 
 const getAllPagesOfQuery = async (token, query, makeNextQuery) => {
+
+  /*
+   * TODO:
+   * Add a module init function that takes `token` as a param
+   * and adds a default axios `authorization` header.
+   */
   const config = {
     headers: {
       authorization: `bearer ${token}`
     }
   }
-  const response = await axios.post(null, { query }, config)
-  const data = response.data
-  const nextQuery = makeNextQuery(data)
-  return nextQuery
-    ? [data, ...await getAllPagesOfQuery(token, nextQuery, makeNextQuery)]
-    : [data]
+
+  try {
+    const response = await axios.post(null, { query }, config)
+    const data = response.data
+    const nextQuery = makeNextQuery(data)
+    return nextQuery
+      ? [data, ...await getAllPagesOfQuery(token, nextQuery, makeNextQuery)]
+      : [data]
+  } catch (error) {
+    const response = error.response
+    const baseMessage = 'An error occurred invoking the GitHub GraphQL API'
+    const message =
+      response && response.status && response.data && response.data.message
+        ? `${baseMessage} (${response.status} ${response.data.message}).`
+        : response && response.status && response.statusText
+          ? `${baseMessage} (${response.status} ${response.statusText}).`
+          : `${baseMessage}.`
+    return [{ errors: [{ message }] }]
+  }
 }
 
 const getUserLangs = async (token, username) => {

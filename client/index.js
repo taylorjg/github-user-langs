@@ -15,9 +15,10 @@ $(() => {
   }
 
   const showErrorPanelForXhr = xhr => {
+    const baseMessage = 'An error occurred proxying a call to the GitHub GraphQL API'
     const errorMessage = xhr && xhr.status && xhr.statusText
-      ? `${xhr.status}: ${xhr.statusText}`
-      : 'Something went wrong!'
+      ? `${baseMessage} (${xhr.status} ${xhr.statusText}).`
+      : `${baseMessage}.`
     showErrorPanel(errorMessage)
   }
 
