@@ -14,7 +14,7 @@ $(() => {
     $errorPanel.removeClass('hidden').show()
   }
 
-  const showErrorPanelWithXhr = xhr => {
+  const showErrorPanelForXhr = xhr => {
     const errorMessage = xhr && xhr.status && xhr.statusText
       ? `${xhr.status}: ${xhr.statusText}`
       : 'Something went wrong!'
@@ -52,7 +52,7 @@ $(() => {
         }
         $username.focus()
       })
-      .fail(showErrorPanelWithXhr)
+      .fail(showErrorPanelForXhr)
       .always(enableSubmitButton)
       .always(hideSpinners)
   })
@@ -82,21 +82,24 @@ const addRowToResultsTable = $tableBody => lang =>
   $tableBody.append(
     $('<tr>', {
       html: [
-        $('<td>', {
-          html: lang.name
-        }),
-        $('<td>', {
-          html: formatPercentage(lang.percentage)
-        }),
-        $('<td>', {
-          html: $('<div>', {
-            style: lang.color ? `width: ${lang.percentage}%; background-color: ${lang.color};` : '',
-            'class': 'language-color',
-            html: lang.color ? '&nbsp;' : '(none)'
-          })
-        })
+        $('<td>', { html: columnContents1(lang) }),
+        $('<td>', { html: columnContents2(lang) }),
+        $('<td>', { html: columnContents3(lang) })
       ]
     }))
+
+const columnContents1 = lang =>
+  lang.name
+
+const columnContents2 = lang =>
+  formatPercentage(lang.percentage)
+
+const columnContents3 = lang =>
+  lang.color
+    ? $('<div>', { html: lang.name })
+      .css('width', `${lang.percentage}%`)
+      .css('background-color', lang.color)
+    : $('<span>', { html: '(none)' })
 
 const formatPercentageOptions = {
   minimumIntegerDigits: 2,

@@ -17,12 +17,16 @@ form {
   font-style: italic;
 }
 
-.language-color {
+#results td:last-child {
   line-height: 8px;
-  font-size: smaller;
-  font-style: italic;
+  vertical-align: middle;
 }
 
-#results td:last-child {
-  vertical-align: middle;
+#results td:last-child div {
+  text-indent: -9999px;
+}
+
+#results td:last-child span {
+  font-size: smaller;
+  font-style: italic;
 }
