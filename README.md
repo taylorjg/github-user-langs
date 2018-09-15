@@ -23,7 +23,7 @@ Batchfile...........00.038%
 
 https://github-user-langs.herokuapp.com/index.html?username=quezlatch
 
-![Web App screenshot](Screenshots/WebApp.png)
+![Web App screenshot](screenshots/WebApp.png)
 
 # Links
 
