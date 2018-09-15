@@ -4,15 +4,16 @@ const common = require('../common')
 $(() => {
   const $username = $('#username')
   const $submit = $('#submit')
-  const $clear = $('#clear')
+  const $reset = $('#reset')
+  const $resultsPanel = $('#resultsPanel')
   const $tableBody = $('#results tbody')
   const $errorPanel = $('#errorPanel')
   const $errorMessage = $('#errorMessage')
-  const $spinners = $('th img')
+  const $spinners = $('form img')
 
   const showErrorPanel = errorMessage => {
     $errorMessage.html(errorMessage)
-    $errorPanel.removeClass('hidden').show()
+    $errorPanel.show().removeClass('hidden')
   }
 
   const showErrorPanelForXhr = xhr => {
@@ -26,17 +27,23 @@ $(() => {
   const hideErrorPanel = () =>
     $errorPanel.hide()
 
-  const enableSubmitButton = () =>
-    $submit.prop('disabled', false)
+  const showResultsPanel = () =>
+    $resultsPanel.show().removeClass('hidden')
 
-  const disableSubmitButton = () =>
-    $submit.prop('disabled', true)
+  const hideResultsPanel = () =>
+    $resultsPanel.hide()
 
   const showSpinners = () =>
     $spinners.show().removeClass('hidden')
 
   const hideSpinners = () =>
     $spinners.hide()
+
+  const enableSubmitButton = () =>
+    $submit.prop('disabled', false)
+
+  const disableSubmitButton = () =>
+    $submit.prop('disabled', true)
 
   $submit.on('click', e => {
     e.preventDefault()
@@ -52,16 +59,20 @@ $(() => {
           hideErrorPanel()
           const langs = common.filterResults(results)
           addRowsToResultsTable($tableBody, langs)
+          showResultsPanel()
         }
       })
       .fail(showErrorPanelForXhr)
-      .always(enableSubmitButton)
+      .fail(hideResultsPanel)
       .always(hideSpinners)
+      .always(enableSubmitButton)
+      .always(() => $username.focus())
   })
 
-  $clear.on('click', () => {
+  $reset.on('click', () => {
+    hideResultsPanel()
     $username.val('')
-    $tableBody.empty()
+    $username.focus()
   })
 
   $('button', $errorPanel).on('click', hideErrorPanel)

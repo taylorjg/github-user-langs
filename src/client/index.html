@@ -32,7 +32,8 @@
             <input id="username" type="text" class="form-control" autofocus autocomplete="off" spellcheck="false" />
           </div>
           <button id="submit" type="submit" class="btn btn-primary btn-xs">Submit</button>
-          <button id="clear" type="button" class="btn-default btn-xs">Clear</button>
+          <button id="reset" type="button" class="btn-danger btn-xs">Reset</button>
+          <img src="smallLoadingSpinner.gif" class="hidden" />
         </form>
       </div>
 
@@ -44,13 +45,13 @@
       </div>
     </div>
 
-    <div class="row">
+    <div id="resultsPanel" class="row hidden">
       <div class="col-md-offset-2 col-md-8">
         <table id="results" class="table table-striped table-condensed">
           <thead>
-            <th class="col-md-2">Language <img src="smallLoadingSpinner.gif" class="hidden" /></th>
-            <th class="col-md-2">% <img src="smallLoadingSpinner.gif" class="hidden" /></th>
-            <th class="col-md-8">GitHub language colour <img src="smallLoadingSpinner.gif" class="hidden" /></th>
+            <th class="col-md-2">Language</th>
+            <th class="col-md-2">%</th>
+            <th class="col-md-8">GitHub language colour</th>
           </thead>
           <tbody>
           </tbody>
