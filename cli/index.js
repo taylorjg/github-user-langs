@@ -1,5 +1,7 @@
 const program = require('commander')
+const R = require('ramda')
 const github = require('../github')
+const common = require('../common')
 
 const formatPercentageOptions = {
   minimumIntegerDigits: 2,
@@ -19,7 +21,8 @@ const main = async (token, username) => {
     if (results.failure) {
       console.log(`ERROR: ${results.failure.errors[0].message}`)
     } else {
-      results.success.forEach(printLang)
+      console.log(`#repos: ${common.countRepos(results)}`)
+      common.filterResults(results).forEach(printLang)
     }
   }
   catch (error) {

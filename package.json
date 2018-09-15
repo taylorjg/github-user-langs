@@ -1,12 +1,13 @@
 {
   "name": "github-user-langs",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Display a breakdown of languages across a GitHub user's repositories",
   "main": "index.js",
   "author": "Jonathan Taylor",
   "license": "MIT",
   "dependencies": {
     "@babel/core": "^7.0.1",
+    "@babel/plugin-syntax-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.2",

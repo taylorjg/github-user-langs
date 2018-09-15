@@ -1,6 +1,7 @@
 const express = require('express')
 const github = require('../github')
 const R = require('ramda')
+const common = require('../common')
 
 const buildRouter = token => {
 
@@ -9,7 +10,7 @@ const buildRouter = token => {
     try {
       const results = await github.getUserLangs(token, username)
       if (results.success) {
-        const langs = results.success
+        const langs = common.filterResults(results)
         const langsLength = langs.length
         const langsList = R.pluck('name', langs).join(', ')
         console.log(`[${username}] INFO | #langs: ${langsLength}; langs: ${langsList}`)

@@ -1,4 +1,5 @@
 import URLSearchParams from 'url-search-params'
+const common = require('../common')
 
 $(() => {
   const $username = $('#username')
@@ -49,9 +50,9 @@ $(() => {
           showErrorPanel(message)
         } else {
           hideErrorPanel()
-          addRowsToResultsTable($tableBody, results.success)
+          const langs = common.filterResults(results)
+          addRowsToResultsTable($tableBody, langs)
         }
-        $username.focus()
       })
       .fail(showErrorPanelForXhr)
       .always(enableSubmitButton)
