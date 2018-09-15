@@ -35,7 +35,7 @@ module.exports = {
     ]
   },
   devtool: 'source-map',
-  mode: 'development',
+  mode: process.env.NODE_ENV || 'development',
   devServer: {
     contentBase: serverPublic,
     proxy: {
