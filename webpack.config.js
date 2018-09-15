@@ -18,9 +18,7 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { context: './src/client', from: '*.{html,css,gif}' }//,
-      // { context: './src/client', from: '*.css' },
-      // { context: './src/client', from: '*.gif' }
+      { context: './src/client', from: '*.{html,css,gif}' }
     ]),
     new HtmlWebpackPlugin({
       template: './src/client/index.html',
