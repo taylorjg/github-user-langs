@@ -45,17 +45,46 @@
       </div>
     </div>
 
-    <div id="resultsPanel" class="row hidden">
-      <div class="col-md-offset-2 col-md-8">
-        <table id="results" class="table table-striped table-condensed">
-          <thead>
-            <th class="col-md-2">Language</th>
-            <th class="col-md-2">%</th>
-            <th class="col-md-8">GitHub language colour</th>
-          </thead>
-          <tbody>
-          </tbody>
-        </table>
+    <div id="resultsPanel" class="hidden">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-3">
+          Number of repositories: <span id="repoCount"></span>
+        </div>
+        <div class="col-md-7 pull-right">
+          <span class="checkbox-inline">
+            <label><input id="includeForkedRepos" type="checkbox">Include forked repos</label>
+          </span>
+          <span class="checkbox-inline">
+            <label><input id="includeNonOwnedRepos" type="checkbox">Include non-owned repos</label>
+          </span>
+        </div>
+      </div>
+      <!-- <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="checkbox">
+            <label><input type="checkbox" value="">Include forked repos</label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="checkbox">
+            <label><input type="checkbox" value="">Include non-owned repos</label>
+          </div>
+        </div>
+      </div> -->
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <table id="results" class="table table-striped table-condensed">
+            <thead>
+              <th class="col-md-2">Language</th>
+              <th class="col-md-2">%</th>
+              <th class="col-md-8">GitHub language colour</th>
+            </thead>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 </body>

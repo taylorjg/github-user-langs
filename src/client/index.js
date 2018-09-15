@@ -6,10 +6,17 @@ $(() => {
   const $submit = $('#submit')
   const $reset = $('#reset')
   const $resultsPanel = $('#resultsPanel')
+  const $repoCount = $('#repoCount')
+  const $includeForkedRepos = $('#includeForkedRepos')
+  const $includeNonOwnedRepos = $('#includeNonOwnedRepos')
   const $tableBody = $('#results tbody')
   const $errorPanel = $('#errorPanel')
   const $errorMessage = $('#errorMessage')
   const $spinners = $('form img')
+
+  let includeForkedRepos = false
+  let includeNonOwnedRepos = false
+  let results = null
 
   const showErrorPanel = errorMessage => {
     $errorMessage.html(errorMessage)
@@ -51,15 +58,14 @@ $(() => {
     showSpinners()
     const username = $username.val()
     $.get(`/api/userLangs/${username}`)
-      .done(results => {
-        if (results.failure) {
-          const message = results.failure.errors[0].message
+      .done(_results => {
+        if (_results.failure) {
+          const message = _results.failure.errors[0].message
           showErrorPanel(message)
         } else {
+          results = _results
+          showResults()
           hideErrorPanel()
-          const langs = common.filterResults(results)
-          addRowsToResultsTable($tableBody, langs)
-          showResultsPanel()
         }
       })
       .fail(showErrorPanelForXhr)
@@ -84,39 +90,58 @@ $(() => {
     $submit.focus()
     $submit.trigger('click')
   }
+
+  $includeForkedRepos.prop('checked', includeForkedRepos)
+  $includeNonOwnedRepos.prop('checked', includeNonOwnedRepos)
+
+  $includeForkedRepos.on('click', e => {
+    includeForkedRepos = e.target.checked
+    showResults()
+  })
+  $includeNonOwnedRepos.on('click', e => {
+    includeNonOwnedRepos = e.target.checked
+    showResults()
+  })
+
+  const showResults = () => {
+    const langs = common.filterResults(results, includeForkedRepos, includeNonOwnedRepos)
+    const repoCount = common.countRepos(results, includeForkedRepos, includeNonOwnedRepos)
+    addRowsToResultsTable($tableBody, langs)
+    $repoCount.html(repoCount)
+    showResultsPanel()
+  }
+  const addRowsToResultsTable = ($tableBody, langs) => {
+    $tableBody.empty()
+    langs.forEach(addRowToResultsTable($tableBody))
+  }
+
+  const addRowToResultsTable = $tableBody => lang =>
+    $tableBody.append(
+      $('<tr>', {
+        html: [
+          $('<td>', { html: columnContents1(lang) }),
+          $('<td>', { html: columnContents2(lang) }),
+          $('<td>', { html: columnContents3(lang) })
+        ]
+      }))
+
+  const columnContents1 = lang =>
+    lang.name
+
+  const columnContents2 = lang =>
+    formatPercentage(lang.percentage)
+
+  const columnContents3 = lang =>
+    $('<div>', { html: lang.name })
+      .css('width', `${lang.percentage}%`)
+      .css('background-color', lang.color || '#ccc')
+
+  const formatPercentageOptions = {
+    minimumIntegerDigits: 2,
+    minimumFractionDigits: 3,
+    maximumFractionDigits: 3
+  }
+
+  const formatPercentage = percentage =>
+    `${percentage.toLocaleString(undefined, formatPercentageOptions)}%`
 })
-
-const addRowsToResultsTable = ($tableBody, langs) => {
-  $tableBody.empty()
-  langs.forEach(addRowToResultsTable($tableBody))
-}
-
-const addRowToResultsTable = $tableBody => lang =>
-  $tableBody.append(
-    $('<tr>', {
-      html: [
-        $('<td>', { html: columnContents1(lang) }),
-        $('<td>', { html: columnContents2(lang) }),
-        $('<td>', { html: columnContents3(lang) })
-      ]
-    }))
-
-const columnContents1 = lang =>
-  lang.name
-
-const columnContents2 = lang =>
-  formatPercentage(lang.percentage)
-
-const columnContents3 = lang =>
-  $('<div>', { html: lang.name })
-    .css('width', `${lang.percentage}%`)
-    .css('background-color', lang.color || '#ccc')
-
-const formatPercentageOptions = {
-  minimumIntegerDigits: 2,
-  minimumFractionDigits: 3,
-  maximumFractionDigits: 3
-}
-
-const formatPercentage = percentage =>
-  `${percentage.toLocaleString(undefined, formatPercentageOptions)}%`

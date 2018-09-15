@@ -13,6 +13,10 @@ form {
   font-style: italic;
 }
 
+#results {
+  margin-top: 10px;
+}
+
 #results td:last-child {
   line-height: 8px;
   vertical-align: middle;
