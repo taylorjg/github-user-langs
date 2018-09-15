@@ -5,12 +5,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const packageJson = require('./package.json')
 
-const serverPublic = path.join(__dirname, 'server', 'public')
+const serverPublic = path.join(__dirname, 'src', 'server', 'public')
 
 module.exports = {
   entry: [
-    'babel-polyfill',
-    './client/index.js'
+    // 'babel-polyfill',
+    './src/client/index.js'
   ],
   output: {
     path: serverPublic,
@@ -18,12 +18,12 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      { context: './client', from: '*.html' },
-      { context: './client', from: '*.css' },
-      { context: './client', from: '*.gif' }
+      { context: './src/client', from: '*.{html,css,gif}' }//,
+      // { context: './src/client', from: '*.css' },
+      // { context: './src/client', from: '*.gif' }
     ]),
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: './src/client/index.html',
       version: packageJson.version
     })
   ],
