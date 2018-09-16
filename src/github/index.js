@@ -41,7 +41,7 @@ const getUserLangs = async (token, username) => {
   const queryBuilder = username => cursor => {
     const after = cursor ? `, after: "${cursor}"` : ''
     return `{
-      user(login: ${username}) {
+      user(login: "${username}") {
         name
         email
         location
