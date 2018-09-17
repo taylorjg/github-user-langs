@@ -9,6 +9,14 @@ $(() => {
   const $repoCount = $('#repoCount')
   const $includeForkedRepos = $('#includeForkedRepos')
   const $includeNonOwnedRepos = $('#includeNonOwnedRepos')
+  const $url = $('#url')
+  const $avatar = $('#avatar')
+  const $name = $('#name')
+  const $login = $('#login')
+  const $company = $('#company')
+  const $location = $('#location')
+  const $email = $('#email')
+  const $websiteUrl = $('#websiteUrl')
   const $tableBody = $('#results tbody')
   const $errorPanel = $('#errorPanel')
   const $errorMessage = $('#errorMessage')
@@ -108,6 +116,50 @@ $(() => {
     const repoCount = common.countRepos(results, includeForkedRepos, includeNonOwnedRepos)
     addRowsToResultsTable($tableBody, langs)
     $repoCount.html(repoCount)
+
+    const user = results.success.user
+
+    $url.attr('href', user.url)
+    $avatar.attr('src', user.avatarUrl)
+
+    $name
+      .html(user.name)
+      .closest('li')
+      .toggle(!!user.name)
+
+    $login
+      .html(user.login)
+      .closest('li')
+      .toggle(!!user.login)
+
+    const $companyContent = user.company && user.company.startsWith('@')
+      ? $('<a>', {
+        href: `https://github.com/${user.company.substring(1)}`,
+        html: user.company
+      })
+      : user.company
+    $company
+      .html($companyContent)
+      .closest('li')
+      .toggle(!!user.company)
+
+    $location
+      .html(user.location)
+      .closest('li')
+      .toggle(!!user.location)
+
+    $email
+      .attr('href', `mailto:${user.email}`)
+      .html(user.email)
+      .closest('li')
+      .toggle(!!user.email)
+
+    $websiteUrl
+      .attr('href', user.websiteUrl)
+      .html(user.websiteUrl)
+      .closest('li')
+      .toggle(!!user.websiteUrl)
+
     showResultsPanel()
   }
   const addRowsToResultsTable = ($tableBody, langs) => {

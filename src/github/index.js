@@ -42,9 +42,22 @@ const getUserLangs = async (token, username) => {
     const after = cursor ? `, after: "${cursor}"` : ''
     return `{
       user(login: "${username}") {
+        login
         name
         email
         location
+        company
+        organizations(first: 100) {
+          nodes {
+            login
+            name
+            description
+            avatarUrl
+            url
+            websiteUrl
+          }
+        }
+        url
         avatarUrl
         websiteUrl
         repositories(first: 100 ${after}) {
