@@ -80,7 +80,6 @@ $(() => {
       .fail(hideResultsPanel)
       .always(hideSpinners)
       .always(enableSubmitButton)
-      .always(() => $username.focus())
   })
 
   $reset.on('click', () => {
