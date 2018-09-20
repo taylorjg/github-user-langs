@@ -1,17 +1,17 @@
 const R = require('ramda')
 
-const filterLangGroups = (allowForkedRepos, allowNonOwnedRepos) =>
+const filterLangGroups = (includeForkedRepos, includeNonOwnedRepos) =>
   R.pipe(
     R.map(R.filter(lang =>
-      (allowForkedRepos || !lang.repoIsFork) &&
-      (allowNonOwnedRepos || lang.repoIsOwned))),
+      (includeForkedRepos || !lang.repoIsFork) &&
+      (includeNonOwnedRepos || lang.repoIsOwned))),
     R.filter(R.compose(R.not, R.isEmpty))
   )
 
-const filterRepos = (allowForkedRepos, allowNonOwnedRepos) =>
+const filterRepos = (includeForkedRepos, includeNonOwnedRepos) =>
   R.filter(repo => (
-    (allowForkedRepos || !repo.isFork) &&
-    (allowNonOwnedRepos || repo.isOwned)))
+    (includeForkedRepos || !repo.isFork) &&
+    (includeNonOwnedRepos || repo.isOwned)))
 
 const sumLangGroup = langGroup => ({
   ...langGroup[0],
@@ -34,9 +34,9 @@ const includePercentages = ({ grandTotal, langs }) => R.map(lang => ({
 const compareLang = (lang1, lang2) =>
   lang2.percentage - lang1.percentage
 
-const filterResults = (results, allowForkedRepos = false, allowNonOwnedRepos = false) => {
+const filterResults = (results, includeForkedRepos = false, includeNonOwnedRepos = false) => {
   const pipe = R.pipe(
-    filterLangGroups(allowForkedRepos, allowNonOwnedRepos),
+    filterLangGroups(includeForkedRepos, includeNonOwnedRepos),
     R.map(sumLangGroup),
     includeGrandTotal,
     includePercentages,
@@ -45,10 +45,20 @@ const filterResults = (results, allowForkedRepos = false, allowNonOwnedRepos = f
   return pipe(results.success.langGroups)
 }
 
-const countRepos = (results, allowForkedRepos = false, allowNonOwnedRepos = false) =>
-  filterRepos(allowForkedRepos, allowNonOwnedRepos)(results.success.repos).length
+const countRepos = (results, includeForkedRepos = false, includeNonOwnedRepos = false) =>
+  filterRepos(includeForkedRepos, includeNonOwnedRepos)(results.success.repos).length
+
+const formatPercentageOptions = {
+  minimumIntegerDigits: 2,
+  minimumFractionDigits: 3,
+  maximumFractionDigits: 3
+}
+
+const formatPercentage = percentage =>
+  `${percentage.toLocaleString(undefined, formatPercentageOptions)}%`
 
 module.exports = {
   filterResults,
-  countRepos
+  countRepos,
+  formatPercentage
 }

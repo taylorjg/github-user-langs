@@ -20,7 +20,7 @@ $(() => {
   const $tableBody = $('#results tbody')
   const $errorPanel = $('#errorPanel')
   const $errorMessage = $('#errorMessage')
-  const $spinners = $('form img')
+  const $spinner = $('form img')
 
   let includeForkedRepos = false
   let includeNonOwnedRepos = false
@@ -48,11 +48,11 @@ $(() => {
   const hideResultsPanel = () =>
     $resultsPanel.hide()
 
-  const showSpinners = () =>
-    $spinners.show().removeClass('hidden')
+  const showSpinner = () =>
+    $spinner.show().removeClass('hidden')
 
-  const hideSpinners = () =>
-    $spinners.hide()
+  const hideSpinner = () =>
+    $spinner.hide()
 
   const enableSubmitButton = () =>
     $submit.prop('disabled', false)
@@ -63,7 +63,7 @@ $(() => {
   $submit.on('click', e => {
     e.preventDefault()
     disableSubmitButton()
-    showSpinners()
+    showSpinner()
     const username = $username.val()
     $.get(`/api/userLangs/${username}`)
       .done(_results => {
@@ -78,7 +78,7 @@ $(() => {
       })
       .fail(showErrorPanelForXhr)
       .fail(hideResultsPanel)
-      .always(hideSpinners)
+      .always(hideSpinner)
       .always(enableSubmitButton)
   })
 
@@ -105,6 +105,7 @@ $(() => {
     includeForkedRepos = e.target.checked
     showResults()
   })
+
   $includeNonOwnedRepos.on('click', e => {
     includeNonOwnedRepos = e.target.checked
     showResults()
@@ -161,6 +162,7 @@ $(() => {
 
     showResultsPanel()
   }
+  
   const addRowsToResultsTable = ($tableBody, langs) => {
     $tableBody.empty()
     langs.forEach(addRowToResultsTable($tableBody))
@@ -180,19 +182,10 @@ $(() => {
     lang.name
 
   const columnContents2 = lang =>
-    formatPercentage(lang.percentage)
+    common.formatPercentage(lang.percentage)
 
   const columnContents3 = lang =>
     $('<div>', { html: lang.name })
       .css('width', `${lang.percentage}%`)
       .css('background-color', lang.color || '#ccc')
-
-  const formatPercentageOptions = {
-    minimumIntegerDigits: 2,
-    minimumFractionDigits: 3,
-    maximumFractionDigits: 3
-  }
-
-  const formatPercentage = percentage =>
-    `${percentage.toLocaleString(undefined, formatPercentageOptions)}%`
 })

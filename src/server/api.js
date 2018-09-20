@@ -1,14 +1,16 @@
 const express = require('express')
-const github = require('../github')
+const ghConfigure = require('../github')
 const R = require('ramda')
 const common = require('../common')
 
 const buildRouter = token => {
 
+  const gh = ghConfigure(token)
+
   const userLangs = async (req, res) => {
     const username = req.params.username
     try {
-      const results = await github.getUserLangs(token, username)
+      const results = await gh.getUserLangs(username)
       if (results.success) {
         const langs = common.filterResults(results)
         const langsLength = langs.length
