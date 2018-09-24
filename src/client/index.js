@@ -17,7 +17,7 @@ $(() => {
   const $location = $('#location')
   const $email = $('#email')
   const $websiteUrl = $('#websiteUrl')
-  const $tableBody = $('#results tbody')
+  const $resultsTableBody = $('#resultsTable tbody')
   const $errorPanel = $('#errorPanel')
   const $errorMessage = $('#errorMessage')
   const $spinner = $('form img')
@@ -114,7 +114,7 @@ $(() => {
   const showResults = () => {
     const langs = common.filterResults(results, includeForkedRepos, includeNonOwnedRepos)
     const repoCount = common.countRepos(results, includeForkedRepos, includeNonOwnedRepos)
-    addRowsToResultsTable($tableBody, langs)
+    addRowsToResultsTable($resultsTableBody, langs)
     $repoCount.html(repoCount)
 
     const user = results.success.user
