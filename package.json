@@ -1,6 +1,6 @@
 {
   "name": "github-user-langs",
-  "version": "0.0.30",
+  "version": "0.0.31",
   "description": "Display a breakdown of languages across a GitHub user's repositories",
   "main": "index.js",
   "author": "Jonathan Taylor",
@@ -23,7 +23,7 @@
     "webpack-dev-server": "^3.1.8"
   },
   "scripts": {
-    "start": "node src/server",
+    "start": "node server",
     "heroku-postbuild": "webpack"
   },
   "repository": {
