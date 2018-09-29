@@ -1,1 +1,157 @@
-/* You can add global styles to this file, and also import other style files */
+form {
+  margin-top: 20px;
+}
+
+form input, button {
+  margin-left: 5px;
+}
+
+.alert.alert-danger {
+  margin-top: 20px;
+  margin-bottom: 0px;
+}
+
+.version {
+  margin-top: 10px;
+  text-align: end;
+  font-size: smaller;
+  font-style: italic;
+}
+
+#resultsTable {
+  margin-top: 10px;
+}
+
+#resultsTable td:last-child {
+  line-height: 8px;
+  vertical-align: middle;
+}
+
+#resultsTable td:last-child div {
+  text-indent: -9999px;
+}
+
+#avatar {
+  margin-bottom: 10px;
+}
+
+#userPanel h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+#userPanel #name {
+  font-size: 20px;
+  display: block;
+}
+
+#userPanel #login {
+  margin-top: 4px;
+  font-size: 16px;
+  display: block;
+  color: #666;
+}
+
+#userPanel ul {
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+#userPanel li {
+  margin-top: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#userPanel svg {
+  vertical-align: text-bottom;
+  color: #6a737d;
+  fill: currentColor;
+  width: 16px;
+}
+
+.normal-row-container {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.centred-content {
+  flex: 0 0 100%;
+}
+
+.results-row-container {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
+#userPanel {
+  flex: 1 1 100%;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+@media (max-width: 767px) {
+  #userPanel div:first-child {
+    flex: 0 0 30%;
+    margin-right: 5px;
+    align-self: flex-start;
+  }
+}
+
+#repoFilterPanel {
+  flex: 1 1 100%;
+}
+
+#resultsTablePanel {
+  flex: 1 1 100%;
+}
+
+@media (min-width: 768px) {
+  .centred-content {
+    flex: 0 0 66%;
+  }
+
+  .results-row-container {
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+  }
+
+  #userPanel {
+    width: 17%;
+    flex: 0 0 12%;
+    padding-right: 10px;
+    flex-flow: column nowrap;
+  }
+
+  #resultsPanelMainContent {
+    flex: 0 0 66%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+  }
+
+  #repoFilterPanel {
+    width: 100%;
+    flex: 0 0 auto;
+  }
+
+  #resultsTablePanel {
+    width: 100%;
+    flex: 0 0 auto;
+  }
+}
+
+@media (min-width: 1200px) {
+  #repoFilterPanel {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  
+  #repoFilterPanel * {
+    flex: 1;
+  }
+}

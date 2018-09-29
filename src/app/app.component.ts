@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { GithubService } from './services/github.service';
 
 @Component({
@@ -9,19 +9,22 @@ import { GithubService } from './services/github.service';
     GithubService
   ]
 })
-export class AppComponent implements OnInit {
-
-  title = 'github-user-langs';
+export class AppComponent {
 
   constructor(private gh: GithubService) { }
 
-  ngOnInit() {
-    this.gh.getUserLangs('fluffy322').subscribe(
+  onSubmit(username: string) {
+    console.log(`[onSubmit] username: ${username}`)
+    this.gh.getUserLangs(username).subscribe(
       data => {
         console.log(JSON.stringify(data, null, 2))
       },
       error => {
         console.log(`ERROR: ${JSON.stringify(error, null, 2)}`)
       })
+  }
+
+  onReset() {
+    console.log('[onReset]')
   }
 }
