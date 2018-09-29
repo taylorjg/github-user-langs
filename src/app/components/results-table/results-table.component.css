@@ -1,0 +1,12 @@
+#resultsTable {
+  margin-top: 10px;
+}
+
+#resultsTable td:last-child {
+  line-height: 8px;
+  vertical-align: middle;
+}
+
+#resultsTable td:last-child div {
+  text-indent: -9999px;
+}
