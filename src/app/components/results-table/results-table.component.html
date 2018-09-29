@@ -1,0 +1,14 @@
+<table id="resultsTable" class="table table-striped table-condensed">
+  <thead>
+    <th>Language</th>
+    <th>%</th>
+    <th>GitHub language colour</th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let lang of langs">
+      <td>{{ lang.name }}</td>
+      <td>{{ lang.percentage }}</td>
+      <td><div [ngStyle]="{'width.%': lang.percentage, 'background-color': lang.color || '#ccc'}">{{ lang.name }}</div></td>
+    </tr>
+  </tbody>
+</table>
