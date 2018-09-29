@@ -7,7 +7,7 @@
   <tbody>
     <tr *ngFor="let lang of langs">
       <td>{{ lang.name }}</td>
-      <td>{{ lang.percentage }}</td>
+      <td>{{ lang.percentage / 100 | percent:'2.3-3' }}</td>
       <td><div [ngStyle]="{'width.%': lang.percentage, 'background-color': lang.color || '#ccc'}">{{ lang.name }}</div></td>
     </tr>
   </tbody>
