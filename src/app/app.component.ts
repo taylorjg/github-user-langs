@@ -3,8 +3,8 @@ import { GithubService } from './services/github.service';
 import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 import { FormComponent } from './components/form/form.component';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
-import { filterResults } from './common';
 import { finalize } from 'rxjs/operators';
+import { filterResults } from '../../common';
 
 @Component({
   selector: 'app-root',
