@@ -5,12 +5,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { FormComponent } from './components/form/form.component';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
+import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    ResultsTableComponent
+    ResultsTableComponent,
+    ErrorPanelComponent
   ],
   imports: [
     BrowserModule,

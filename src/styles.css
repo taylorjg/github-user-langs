@@ -5,11 +5,6 @@
   font-style: italic;
 }
 
-.alert.alert-danger {
-  margin-top: 20px;
-  margin-bottom: 0px;
-}
-
 #userPanel #avatar {
   margin-bottom: 10px;
 }

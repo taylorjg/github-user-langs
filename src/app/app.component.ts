@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { GithubService } from './services/github.service';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
+import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 import * as R from 'ramda';
 
 const filterLangGroups = (includeForkedRepos, includeNonOwnedRepos) =>
@@ -58,6 +59,7 @@ const filterResults = (results, includeForkedRepos = false, includeNonOwnedRepos
 })
 export class AppComponent {
 
+  @ViewChild(ErrorPanelComponent) errorPanel: ErrorPanelComponent;
   @ViewChild(ResultsTableComponent) resultsTable: ResultsTableComponent;
 
   constructor(private gh: GithubService) { }
@@ -65,11 +67,17 @@ export class AppComponent {
   onSubmit(username: string) {
     console.log(`[onSubmit] username: ${username}`)
     this.gh.getUserLangs(username).subscribe(
-      results => {
-        this.resultsTable.langs = filterResults(results)
+      (results: any) => {
+        if (results.failure) {
+          this.errorPanel.errorMessage = results.failure.errors[0].message;
+          this.errorPanel.show = true;
+        } else {
+          this.resultsTable.langs = filterResults(results)
+          this.errorPanel.show = false;
+        }
       },
       error => {
-        console.log(`ERROR: ${JSON.stringify(error, null, 2)}`)
+        this.errorPanel.showHttpError(error, 'An error occurred proxying a call to the GitHub GraphQL API');
       })
   }
 
