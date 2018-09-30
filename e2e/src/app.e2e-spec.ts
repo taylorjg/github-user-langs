@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import { version } from '../../version2';
 
 describe('workspace-project App', () => {
   
@@ -6,6 +7,11 @@ describe('workspace-project App', () => {
 
   beforeEach(() => {
     page = new AppPage();
+  });
+
+  it('should display the correct version number', () => {
+    page.navigateTo();
+    expect(page.getVersion()).toMatch(new RegExp(`${version}$`));
   });
 
   it('should list 3 languages for dhpiggott', () => {

@@ -6,7 +6,7 @@ import { RepoFilterComponent } from './components/repo-filter/repo-filter.compon
 import { ResultsTableComponent } from './components/results-table/results-table.component';
 import { finalize } from 'rxjs/operators';
 import * as common from '../../common';
-import { version } from '../version';
+import { version } from '../../version';
 
 @Component({
   selector: 'app-root',

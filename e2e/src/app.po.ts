@@ -6,6 +6,10 @@ export class AppPage {
     return browser.get('/');
   }
 
+  getVersion() {
+    return element(by.css('.version')).getText();
+  }
+
   enterUsername(username) {
     return element(by.css('#username')).sendKeys(username);
   }
