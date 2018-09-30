@@ -69,11 +69,10 @@ export class AppComponent {
     this.gh.getUserLangs(username).subscribe(
       (results: any) => {
         if (results.failure) {
-          this.errorPanel.errorMessage = results.failure.errors[0].message;
-          this.errorPanel.show = true;
+          this.errorPanel.showError(results.failure.errors[0].message);
         } else {
           this.resultsTable.langs = filterResults(results)
-          this.errorPanel.show = false;
+          this.errorPanel.close();
         }
       },
       error => {

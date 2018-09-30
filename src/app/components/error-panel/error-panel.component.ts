@@ -15,10 +15,19 @@ export class ErrorPanelComponent implements OnInit {
   ngOnInit() {
   }
 
+  showError(errorMessage) {
+    this.errorMessage = errorMessage;
+    this.show = true;
+  }
+
   showHttpError(error, baseMessage) {
-    this.errorMessage = error && error.status && error.statusText
+    const errorMessage = error && error.status && error.statusText
       ? `${baseMessage} (${error.status} ${error.statusText}).`
       : `${baseMessage}.`
-    this.show = true;
+    this.showError(errorMessage);
+  }
+
+  close() {
+    this.show = false;
   }
 }
