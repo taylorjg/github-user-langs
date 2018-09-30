@@ -6,6 +6,7 @@ import { RepoFilterComponent } from './components/repo-filter/repo-filter.compon
 import { ResultsTableComponent } from './components/results-table/results-table.component';
 import { finalize } from 'rxjs/operators';
 import * as common from '../../common';
+import { version } from '../version';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +23,9 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild(RepoFilterComponent) repoFilter: RepoFilterComponent;
   @ViewChild(ResultsTableComponent) resultsTable: ResultsTableComponent;
 
-  results = null;
-  subscription = null;
+  version = version;
+  private results = null;
+  private subscription = null;
 
   constructor(private gh: GithubService) { }
 
