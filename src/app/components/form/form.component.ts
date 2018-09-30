@@ -8,8 +8,8 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class FormComponent implements OnInit {
 
   @Input() showSpinner = false;
-  @Output() onSubmit: EventEmitter<string> = new EventEmitter<string>();
-  @Output() onReset: EventEmitter<null> = new EventEmitter<null>();
+  @Output() onSubmit = new EventEmitter<string>();
+  @Output() onReset = new EventEmitter<null>();
 
   username: string = '';
 

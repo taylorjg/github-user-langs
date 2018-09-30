@@ -1,0 +1,31 @@
+<div id="repoFilterPanel">
+  <div>
+    Number of repositories: <span id="repoCount">{{ repoCount }}</span>
+  </div>
+  <div>
+    <span class="checkbox-inline">
+      <label>
+        <input
+        [(ngModel)]="includeForkedRepos"
+        (change)="change()"
+        id="includeForkedRepos"
+        name="includeForkedRepos"
+        type="checkbox">
+        Include forked repos
+      </label>
+    </span>
+  </div>
+  <div>
+    <span class="checkbox-inline">
+      <label>
+        <input
+        [(ngModel)]="includeNonOwnedRepos"
+        (change)="change()"
+        id="includeNonOwnedRepos"
+        name="includeNonOwnedRepos"
+        type="checkbox">
+        Include non-owned repos
+      </label>
+    </span>
+  </div>
+</div>

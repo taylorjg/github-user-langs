@@ -1,10 +1,11 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { GithubService } from './services/github.service';
 import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 import { FormComponent } from './components/form/form.component';
+import { RepoFilterComponent } from './components/repo-filter/repo-filter.component';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
 import { finalize } from 'rxjs/operators';
-import { filterResults } from '../../common';
+import * as common from '../../common';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +15,25 @@ import { filterResults } from '../../common';
     GithubService
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
 
   @ViewChild(ErrorPanelComponent) errorPanel: ErrorPanelComponent;
   @ViewChild(FormComponent) form: FormComponent;
+  @ViewChild(RepoFilterComponent) repoFilter: RepoFilterComponent;
   @ViewChild(ResultsTableComponent) resultsTable: ResultsTableComponent;
 
+  results = null;
+  subscription = null;
+
   constructor(private gh: GithubService) { }
+
+  ngOnInit() {
+    this.subscription = this.repoFilter.onFilterChanged.subscribe(this.updateResults.bind(this));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();    
+  }
 
   onSubmit(username: string) {
     this.form.showSpinner = true;
@@ -33,7 +46,8 @@ export class AppComponent {
           if (results.failure) {
             this.errorPanel.showError(results.failure.errors[0].message);
           } else {
-            this.resultsTable.langs = filterResults(results)
+            this.results = results;
+            this.updateResults();
             this.errorPanel.close();
           }
         },
@@ -43,6 +57,17 @@ export class AppComponent {
   }
 
   onReset() {
-    console.log('[onReset]')
+    console.log('[onReset] TODO')
+  }
+
+  updateResults() {
+    this.resultsTable.langs = common.filterResults(
+      this.results,
+      this.repoFilter.includeForkedRepos,
+      this.repoFilter.includeNonOwnedRepos);
+    this.repoFilter.repoCount = common.countRepos(
+      this.results,
+      this.repoFilter.includeForkedRepos,
+      this.repoFilter.includeNonOwnedRepos);
   }
 }
