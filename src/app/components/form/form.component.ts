@@ -7,11 +7,11 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class FormComponent implements OnInit {
 
-  @Input() showSpinner = false;
   @Output() onSubmit = new EventEmitter<string>();
   @Output() onReset = new EventEmitter<null>();
 
-  username: string = '';
+  username = '';
+  queryInProgress = false;
 
   constructor() { }
 
@@ -24,5 +24,13 @@ export class FormComponent implements OnInit {
 
   reset() {
     this.onReset.emit();
+  }
+
+  queryStarted() {
+    this.queryInProgress = true;
+  }
+
+  queryFinished() {
+    this.queryInProgress = false;
   }
 }

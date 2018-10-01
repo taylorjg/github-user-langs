@@ -12,7 +12,20 @@
       autocomplete="off"
       spellcheck="false" />
   </div>
-  <button id="submit" type="submit" class="btn btn-primary btn-xs" [disabled]="form.invalid">Submit</button>
-  <button id="reset" type="button" class="btn-danger btn-xs" (click)="reset()">Reset</button>
-  <img *ngIf="showSpinner" src="assets/smallLoadingSpinner.gif" />
+  <button
+    id="submit"
+    type="submit"
+    class="btn btn-primary btn-xs"
+    [disabled]="form.invalid || queryInProgress">
+    Submit
+  </button>
+  <button
+    id="reset"
+    type="button"
+    class="btn btn-danger btn-xs"
+    [disabled]="queryInProgress"
+    (click)="reset()">
+    Reset
+  </button>
+  <img *ngIf="queryInProgress" src="assets/smallLoadingSpinner.gif" />
 </form>

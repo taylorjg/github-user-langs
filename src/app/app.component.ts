@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { GithubService } from './services/github.service';
 import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 import { FormComponent } from './components/form/form.component';
@@ -27,21 +28,35 @@ export class AppComponent implements OnInit, OnDestroy {
   private results = null;
   private subscription = null;
 
-  constructor(private gh: GithubService) { }
+  constructor(private gh: GithubService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      const username = params['username'];
+      if (username) {
+        this.getUserLangs(username);
+      }
+    });
     this.subscription = this.repoFilter.onFilterChanged.subscribe(this.updateResults.bind(this));
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();    
+    this.subscription.unsubscribe();
   }
 
   onSubmit(username: string) {
-    this.form.showSpinner = true;
+    this.getUserLangs(username);
+  }
+
+  onReset() {
+    console.log('[onReset] TODO')
+  }
+
+  private getUserLangs(username: string) {
+    this.form.queryStarted();
     this.gh.getUserLangs(username)
       .pipe(finalize(() => {
-        this.form.showSpinner = false;
+        this.form.queryFinished();
       }))
       .subscribe(
         (results: any) => {
@@ -58,11 +73,7 @@ export class AppComponent implements OnInit, OnDestroy {
         });
   }
 
-  onReset() {
-    console.log('[onReset] TODO')
-  }
-
-  updateResults() {
+  private updateResults() {
     this.resultsTable.langs = common.filterResults(
       this.results,
       this.repoFilter.includeForkedRepos,
