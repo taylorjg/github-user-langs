@@ -21,6 +21,11 @@ describe('workspace-project App', () => {
     expect(page.getResultsTableRows().count()).toBe(3);
   });
 
+  it('should list 3 languages for dhpiggott (via query param)', () => {
+    page.navigateTo('dhpiggott');
+    expect(page.getResultsTableRows().count()).toBe(3);
+  });
+
   it('should display an error message for non-existent user, "dhpiggott-bogus"', () => {
     page.navigateTo();
     page.enterUsername('dhpiggott-bogus');

@@ -2,8 +2,9 @@ import { browser, by, element } from 'protractor';
 
 export class AppPage {
   
-  navigateTo() {
-    return browser.get('/');
+  navigateTo(username?: string) {
+    const destination = username ? `/index.html?username=${username}` : '/'
+    return browser.get(destination);
   }
 
   getVersion() {
