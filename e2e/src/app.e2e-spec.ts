@@ -14,28 +14,28 @@ describe('workspace-project App', () => {
     expect(page.getVersion()).toMatch(new RegExp(`${version}$`));
   });
 
-  it('should list 3 languages for dhpiggott', () => {
+  it('should have non-zero language count for dhpiggott (via form submission)', () => {
     page.navigateTo();
     page.enterUsername('dhpiggott');
     page.clickSubmit();
-    expect(page.getResultsTableRows().count()).toBe(3);
+    expect(page.getResultsTableRows().count()).toBeGreaterThan(0);
   });
 
-  it('should list 3 languages for dhpiggott (via query param)', () => {
+  it('should have non-zero language count for dhpiggott (via query param)', () => {
     page.navigateTo('dhpiggott');
-    expect(page.getResultsTableRows().count()).toBe(3);
+    expect(page.getResultsTableRows().count()).toBeGreaterThan(0);
   });
 
-  it('should display an error message for non-existent user, "dhpiggott-bogus"', () => {
+  it('should display an error message for a non-existent user', () => {
     page.navigateTo();
-    page.enterUsername('dhpiggott-bogus');
+    page.enterUsername('mary-mungo-midge');
     page.clickSubmit();
-    expect(page.getErrorPanelErrorMessage()).toContain('dhpiggott-bogus');
+    expect(page.getErrorPanelErrorMessage()).toContain('mary-mungo-midge');
   });
 
-  it('should have the correct repo count', async () => {
-    page.navigateTo('taylorjg');
-    expect(page.getRepoCount()).toBeGreaterThan(100);
+  it('should have a non-zero repo count', async () => {
+    page.navigateTo('dhpiggott');
+    expect(page.getRepoCount()).toBeGreaterThan(0);
   });
 
   it('should have higher repo count after checking includeForkedRepos', async () => {
