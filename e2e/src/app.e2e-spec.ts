@@ -1,5 +1,6 @@
 import { AppPage } from './app.po';
 import { version } from '../../version2';
+import * as P from 'protractor';
 
 describe('workspace-project App', () => {
   
@@ -31,6 +32,18 @@ describe('workspace-project App', () => {
     page.enterUsername('mary-mungo-midge');
     page.clickSubmit();
     expect(page.getErrorPanelErrorMessage()).toContain('mary-mungo-midge');
+  });
+
+  it('should total 100% \u00b1 tolerance', async () => {
+    page.navigateTo('dhpiggott');
+    const rows = page.getResultsTableRows();
+    const f = async (acc, row) => {
+      const s = await row.$('td:nth-child(2)').getText()
+      const n = Number(s.slice(0, -1))
+      return acc + n
+    }
+    const total = await rows.reduce(f, 0);
+    expect(total).toBeCloseTo(100, 6);
   });
 
   it('should have a non-zero repo count', async () => {
