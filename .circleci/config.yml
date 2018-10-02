@@ -15,8 +15,8 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
-        command: PORT=3001 TOKEN=$GITHUB_API_TOKEN node server
-        background: true
+          command: PORT=3001 TOKEN=$GITHUB_API_TOKEN node server
+          background: true
       - run: ng e2e
   deploy-job:
     docker:
