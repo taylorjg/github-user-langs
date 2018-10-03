@@ -1,8 +1,7 @@
 import { AppPage } from './app.po';
 import { version } from '../../version2';
-import * as P from 'protractor';
 
-describe('workspace-project App', () => {
+describe('github-user-langs', () => {
   
   let page: AppPage;
 
