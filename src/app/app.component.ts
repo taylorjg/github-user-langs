@@ -8,6 +8,7 @@ import { ResultsTableComponent } from './components/results-table/results-table.
 import { finalize } from 'rxjs/operators';
 import * as common from '../../common';
 import { version } from '../../version';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 @Component({
   selector: 'app-root',
@@ -21,6 +22,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   @ViewChild(ErrorPanelComponent) errorPanel: ErrorPanelComponent;
   @ViewChild(FormComponent) form: FormComponent;
+  @ViewChild(UserDetailsComponent) userDetails: UserDetailsComponent;
   @ViewChild(RepoFilterComponent) repoFilter: RepoFilterComponent;
   @ViewChild(ResultsTableComponent) resultsTable: ResultsTableComponent;
 
@@ -82,5 +84,6 @@ export class AppComponent implements OnInit, OnDestroy {
       this.results,
       this.repoFilter.includeForkedRepos,
       this.repoFilter.includeNonOwnedRepos);
+    this.userDetails.user = this.results.success.user;
   }
 }

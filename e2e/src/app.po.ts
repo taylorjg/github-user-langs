@@ -56,4 +56,44 @@ export class AppPage {
       return element(by.css('#includeNonOwnedRepos')).click();
     }
   }
+
+  getUserLink() {
+    return element(by.css('#userPanel #url')).getAttribute('href');
+  }
+
+  getUserAvatarLink() {
+    return element(by.css('#userPanel #avatar')).getAttribute('src');
+  }
+
+  getUserNameText() {
+    return element(by.css('#userPanel #name')).getText();
+  }
+
+  getUserLoginText() {
+    return element(by.css('#userPanel #login')).getText();
+  }
+
+  getUserCompanyText() {
+    return element(by.css('#userPanel #company')).getText();
+  }
+
+  getUserLocationText() {
+    return element(by.css('#userPanel #location')).getText();
+  }
+
+  getUserEmailText() {
+    return element(by.css('#userPanel #email')).getText();
+  }
+
+  getUserEmailLink() {
+    return element(by.css('#userPanel #email')).getAttribute('href');
+  }
+
+  getUserWebsiteText() {
+    return element(by.css('#userPanel #websiteUrl')).getText();
+  }
+
+  getUserWebsiteLink() {
+    return element(by.css('#userPanel #websiteUrl')).getAttribute('href');
+  }
 }
