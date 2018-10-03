@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/taylorjg/github-user-langs.svg?style=svg)](https://circleci.com/gh/taylorjg/github-user-langs)
+
 # Description
 
 Display a breakdown of languages across a GitHub user's repositories.
