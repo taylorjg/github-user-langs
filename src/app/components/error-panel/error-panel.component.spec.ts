@@ -1,8 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ErrorPanelComponent } from './error-panel.component';
 
 describe('ErrorPanelComponent', () => {
+  
   let component: ErrorPanelComponent;
   let fixture: ComponentFixture<ErrorPanelComponent>;
 

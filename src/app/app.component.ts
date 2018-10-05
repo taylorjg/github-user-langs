@@ -3,12 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { GithubService } from './services/github.service';
 import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 import { FormComponent } from './components/form/form.component';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { RepoFilterComponent } from './components/repo-filter/repo-filter.component';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
 import { finalize } from 'rxjs/operators';
 import * as common from '../../common';
 import { version } from '../../version';
-import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 @Component({
   selector: 'app-root',
@@ -43,7 +43,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   onSubmit(username: string) {

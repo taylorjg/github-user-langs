@@ -1,14 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { FormsModule } from '@angular/forms';
 import { RepoFilterComponent } from './repo-filter.component';
 
 describe('RepoFilterComponent', () => {
+  
   let component: RepoFilterComponent;
   let fixture: ComponentFixture<RepoFilterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RepoFilterComponent ]
+      imports: [
+        FormsModule
+      ],
+      declarations: [
+        RepoFilterComponent
+      ]
     })
     .compileComponents();
   }));
