@@ -2,7 +2,7 @@ const path = require('path')
 const express = require('express')
 const api = require('./api')
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
 const token = process.env.TOKEN
 
 const publicFolder = path.join(__dirname, 'public')

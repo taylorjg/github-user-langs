@@ -109,6 +109,9 @@
           "configurations": {
             "production": {
               "devServerTarget": "github-user-langs:serve:production"
+            },
+            "mock": {
+              "protractorConfig": "e2e/protractor.conf.mock.js"
             }
           }
         },

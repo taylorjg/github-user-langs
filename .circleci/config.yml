@@ -16,7 +16,12 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
       - run: node_modules/.bin/ng test --watch false
       - run:
-          command: PORT=3001 TOKEN=$GITHUB_API_TOKEN node server
+          command: node mockserver
+          background: true
+      - run: node_modules/.bin/ng e2e --configuration mock
+      - run: kill -s SIGQUIT `ps -o pid,command | egrep "\d+\snode mockserver" | cut -f 1`
+      - run:
+          command: TOKEN=$GITHUB_API_TOKEN node server
           background: true
       - run: node_modules/.bin/ng e2e
   deploy-job:
