@@ -19,6 +19,8 @@ jobs:
           command: node mockserver
           background: true
       - run: node_modules/.bin/ng e2e --configuration mock
+      - run: ps -o pid,command
+      - run: ps -o pid,command | egrep "\d+\snode mockserver"
       - run: kill -s SIGQUIT `ps -o pid,command | egrep "\d+\snode mockserver" | cut -f 1`
       - run:
           command: TOKEN=$GITHUB_API_TOKEN node server
