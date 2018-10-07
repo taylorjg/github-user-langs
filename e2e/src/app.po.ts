@@ -77,6 +77,10 @@ export class AppPage {
     return element(by.css('#userPanel #company')).getText();
   }
 
+  getUserCompanyLink() {
+    return element(by.css('#userPanel #company a')).getAttribute('href');
+  }
+
   getUserLocationText() {
     return element(by.css('#userPanel #location')).getText();
   }

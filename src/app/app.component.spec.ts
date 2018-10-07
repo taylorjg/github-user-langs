@@ -9,6 +9,8 @@ import { FormComponent } from './components/form/form.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { RepoFilterComponent } from './components/repo-filter/repo-filter.component';
 import { ResultsTableComponent } from './components/results-table/results-table.component';
+import { MaybeMentionComponent } from './components/maybe-mention/maybe-mention.component';
+import { MailtoPipe } from './pipes/mailto.pipe';
 import { GithubService } from './services/github.service';
 
 describe('AppComponent', () => {
@@ -26,7 +28,9 @@ describe('AppComponent', () => {
         ResultsTableComponent,
         ErrorPanelComponent,
         RepoFilterComponent,
-        UserDetailsComponent
+        UserDetailsComponent,
+        MaybeMentionComponent,
+        MailtoPipe
       ],
       providers: [
         GithubService,

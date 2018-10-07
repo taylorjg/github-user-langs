@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { UserDetailsComponent } from './user-details.component';
+import { MaybeMentionComponent } from '../maybe-mention/maybe-mention.component';
+import { MailtoPipe } from '../../pipes/mailto.pipe';
 
 describe('UserDetailsComponent', () => {
   
@@ -8,7 +10,11 @@ describe('UserDetailsComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ UserDetailsComponent ]
+      declarations: [
+        UserDetailsComponent,
+        MaybeMentionComponent,
+        MailtoPipe
+      ]
     })
     .compileComponents();
   }));

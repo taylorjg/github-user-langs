@@ -59,6 +59,7 @@ describe('github-user-langs', () => {
       expect(page.getUserNameText()).toBe('David Piggott');
       expect(page.getUserLoginText()).toBe('dhpiggott');
       expect(page.getUserCompanyText()).toBe('@cakesolutions');
+      expect(page.getUserCompanyLink()).toBe('https://github.com/cakesolutions');
       expect(page.getUserLocationText()).toBe('United Kingdom');
       expect(page.getUserEmailText()).toBe('david@piggott.me.uk');
       expect(page.getUserEmailLink()).toBe('mailto:david@piggott.me.uk');

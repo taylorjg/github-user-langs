@@ -9,6 +9,8 @@ import { ResultsTableComponent } from './components/results-table/results-table.
 import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 import { RepoFilterComponent } from './components/repo-filter/repo-filter.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { MaybeMentionComponent } from './components/maybe-mention/maybe-mention.component';
+import { MailtoPipe } from './pipes/mailto.pipe';
 
 const routes: Routes = [
   { path: 'index.html', component: AppComponent },
@@ -22,7 +24,9 @@ const routes: Routes = [
     ResultsTableComponent,
     ErrorPanelComponent,
     RepoFilterComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    MaybeMentionComponent,
+    MailtoPipe
   ],
   imports: [
     BrowserModule,

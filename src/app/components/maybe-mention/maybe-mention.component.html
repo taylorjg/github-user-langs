@@ -1,0 +1,6 @@
+<a
+  *ngIf="name.startsWith('@'); else elseBlock"
+  href="https://github.com/{{ name.substring(1) }}">
+  {{ name }}
+</a>
+<ng-template #elseBlock>{{ name }}</ng-template>
