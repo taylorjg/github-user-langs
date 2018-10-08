@@ -27,7 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
   @ViewChild(ResultsTableComponent) resultsTable: ResultsTableComponent;
 
   version = version;
-  private results = null;
+  results = null;
   private subscription = null;
 
   constructor(private gh: GithubService, private route: ActivatedRoute) { }
@@ -57,6 +57,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private getUserLangs(username: string) {
+    this.results = null;
     this.form.queryStarted();
     this.gh.getUserLangs(username)
       .pipe(finalize(() => {
