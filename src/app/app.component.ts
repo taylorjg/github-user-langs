@@ -53,7 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
-    console.log('[onReset] TODO')
+    this.results = null;
+    this.repoFilter.includeForkedRepos = false;
+    this.repoFilter.includeNonOwnedRepos = false;
+    this.form.clear();
   }
 
   private getUserLangs(username: string) {
