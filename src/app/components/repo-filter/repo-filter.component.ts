@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'repo-filter',
@@ -9,10 +8,9 @@ import { FormsModule } from '@angular/forms';
 export class RepoFilterComponent implements OnInit {
 
   @Input() repoCount = 0;
-  @Output() onFilterChanged = new EventEmitter<null>();
-
-  includeForkedRepos = false;
-  includeNonOwnedRepos = false;
+  @Input() includeForkedRepos = false;
+  @Input() includeNonOwnedRepos = false;
+  @Output() onFilterChanged = new EventEmitter<any>();
 
   constructor() { }
 
@@ -20,6 +18,10 @@ export class RepoFilterComponent implements OnInit {
   }
 
   change() {
-    this.onFilterChanged.emit();
+    const filterValues = {
+      includeForkedRepos: this.includeForkedRepos,
+      includeNonOwnedRepos: this.includeNonOwnedRepos
+    };
+    this.onFilterChanged.emit(filterValues);
   }
 }

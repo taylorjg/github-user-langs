@@ -1,11 +1,7 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { GithubService } from './services/github.service';
 import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
-import { FormComponent } from './components/form/form.component';
-import { UserDetailsComponent } from './components/user-details/user-details.component';
-import { RepoFilterComponent } from './components/repo-filter/repo-filter.component';
-import { ResultsTableComponent } from './components/results-table/results-table.component';
 import { finalize } from 'rxjs/operators';
 import * as common from '../../common';
 import { version } from '../../version';
@@ -18,17 +14,18 @@ import { version } from '../../version';
     GithubService
   ]
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
 
   @ViewChild(ErrorPanelComponent) errorPanel: ErrorPanelComponent;
-  @ViewChild(FormComponent) form: FormComponent;
-  @ViewChild(UserDetailsComponent) userDetails: UserDetailsComponent;
-  @ViewChild(RepoFilterComponent) repoFilter: RepoFilterComponent;
-  @ViewChild(ResultsTableComponent) resultsTable: ResultsTableComponent;
 
   version = version;
+  includeForkedRepos = false;
+  includeNonOwnedRepos = false;
   results = null;
-  private subscription = null;
+  repoCount = 0;
+  langs = [];
+  user = null;
+  queryInProgress = false;
 
   constructor(private gh: GithubService, private route: ActivatedRoute) { }
 
@@ -39,13 +36,6 @@ export class AppComponent implements OnInit, OnDestroy {
         this.getUserLangs(username);
       }
     });
-    this.subscription = this.repoFilter.onFilterChanged.subscribe(this.updateResults.bind(this));
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
   onSubmit(username: string) {
@@ -53,18 +43,26 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onReset() {
+    this.includeForkedRepos = false;
+    this.includeNonOwnedRepos = false;
     this.results = null;
-    this.repoFilter.includeForkedRepos = false;
-    this.repoFilter.includeNonOwnedRepos = false;
-    this.form.clear();
+    this.repoCount = 0;
+    this.langs = [];
+    this.user = null;
+  }
+
+  onFilterChanged(filterValues) {
+    this.includeForkedRepos = filterValues.includeForkedRepos;
+    this.includeNonOwnedRepos = filterValues.includeNonOwnedRepos;
+    this.updateResults();
   }
 
   private getUserLangs(username: string) {
     this.results = null;
-    this.form.queryStarted();
+    this.queryStarted();
     this.gh.getUserLangs(username)
       .pipe(finalize(() => {
-        this.form.queryFinished();
+        this.queryFinished();
       }))
       .subscribe(
         (results: any) => {
@@ -82,14 +80,22 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private updateResults() {
-    this.resultsTable.langs = common.filterResults(
+    this.langs = common.filterResults(
       this.results,
-      this.repoFilter.includeForkedRepos,
-      this.repoFilter.includeNonOwnedRepos);
-    this.repoFilter.repoCount = common.countRepos(
+      this.includeForkedRepos,
+      this.includeNonOwnedRepos);
+    this.repoCount = common.countRepos(
       this.results,
-      this.repoFilter.includeForkedRepos,
-      this.repoFilter.includeNonOwnedRepos);
-    this.userDetails.user = this.results.success.user;
+      this.includeForkedRepos,
+      this.includeNonOwnedRepos);
+    this.user = this.results.success.user;
+  }
+
+  queryStarted() {
+    this.queryInProgress = true;
+  }
+
+  queryFinished() {
+    this.queryInProgress = false;
   }
 }

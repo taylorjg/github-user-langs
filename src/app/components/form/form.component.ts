@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-form',
@@ -7,12 +7,12 @@ import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '
 })
 export class FormComponent implements OnInit {
 
+  @Input() queryInProgress = false;
   @Output() onSubmit = new EventEmitter<string>();
   @Output() onReset = new EventEmitter<null>();
   @ViewChild('usernameField') usernameField: ElementRef;
 
   username = '';
-  queryInProgress = false;
 
   constructor() { }
 
@@ -24,19 +24,8 @@ export class FormComponent implements OnInit {
   }
 
   reset() {
-    this.onReset.emit();
-  }
-
-  queryStarted() {
-    this.queryInProgress = true;
-  }
-
-  queryFinished() {
-    this.queryInProgress = false;
-  }
-
-  clear() {
     this.username = '';
     this.usernameField.nativeElement.focus();
+    this.onReset.emit();
   }
 }
