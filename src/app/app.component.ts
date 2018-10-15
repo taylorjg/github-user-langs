@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { GithubService } from './services/github.service';
+import { GitHubService } from './services/github.service';
 import { ErrorPanelComponent } from './components/error-panel/error-panel.component';
 import { finalize } from 'rxjs/operators';
 import * as common from '../../common';
@@ -11,7 +11,7 @@ import { version } from '../../version';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [
-    GithubService
+    GitHubService
   ]
 })
 export class AppComponent implements OnInit {
@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   user = null;
   queryInProgress = false;
 
-  constructor(private gh: GithubService, private route: ActivatedRoute) { }
+  constructor(private gh: GitHubService, private route: ActivatedRoute) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {

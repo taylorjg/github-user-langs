@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { GithubService } from './github.service';
+import { GitHubService } from './github.service';
 
-describe('GithubService', () => {
+describe('GitHubService', () => {
 
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
@@ -11,7 +11,7 @@ describe('GithubService', () => {
   }));
 
   it('should be created', () => {
-    const service: GithubService = TestBed.get(GithubService);
+    const service: GitHubService = TestBed.get(GitHubService);
     expect(service).toBeTruthy();
   });
 });

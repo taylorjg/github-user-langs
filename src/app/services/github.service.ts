@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({
   providedIn: 'root'
 })
-export class GithubService {
+export class GitHubService {
 
   constructor(private http: HttpClient) { }
 

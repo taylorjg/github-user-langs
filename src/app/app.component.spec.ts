@@ -11,7 +11,7 @@ import { RepoFilterComponent } from './components/repo-filter/repo-filter.compon
 import { ResultsTableComponent } from './components/results-table/results-table.component';
 import { MaybeMentionComponent } from './components/maybe-mention/maybe-mention.component';
 import { MailtoPipe } from './pipes/mailto.pipe';
-import { GithubService } from './services/github.service';
+import { GitHubService } from './services/github.service';
 
 describe('AppComponent', () => {
   
@@ -33,7 +33,7 @@ describe('AppComponent', () => {
         MailtoPipe
       ],
       providers: [
-        GithubService,
+        GitHubService,
         { provide: APP_BASE_HREF, useValue: '/' }
       ]
     }).compileComponents();
