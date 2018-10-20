@@ -49,7 +49,7 @@ describe('github-user-langs', () => {
         return acc + n
       }
       const total = await rows.reduce(f, 0);
-      expect(total).toBeCloseTo(100, 6);
+      expect(total).toBeCloseTo(100, 2);
     });
 
     it('should fully populate the user details panel', () => {
