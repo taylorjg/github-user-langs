@@ -1,0 +1,42 @@
+#avatar {
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  line-height: 1;
+}
+
+#name {
+  font-size: 20px;
+  display: block;
+}
+
+#login {
+  margin-top: 4px;
+  font-size: 16px;
+  display: block;
+  color: #666;
+}
+
+ul {
+  margin-top: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin-top: 3px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+svg {
+  vertical-align: text-bottom;
+  color: #6a737d;
+  fill: currentColor;
+  width: 16px;
+  margin-right: 2px;
+}

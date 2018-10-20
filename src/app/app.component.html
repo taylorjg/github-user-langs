@@ -33,19 +33,17 @@
     </div>
   </div>
 
-  <div *ngIf="results">
-    <div class="row">
-      <div class="col-xs-12 results-row-container">
-        <user-details id="userPanel" [user]="user"></user-details>
-        <div id="resultsPanelMainContent">
-          <repo-filter
-            [repoCount]="repoCount"
-            [includeForkedRepos]="includeForkedRepos"
-            [includeNonOwnedRepos]="includeNonOwnedRepos"
-            (onFilterChanged)="onFilterChanged($event)">
-          </repo-filter>
-          <results-table [langs]="langs"></results-table>
-        </div>
+  <div class="row" *ngIf="results">
+    <div class="col-xs-12 results-row-container">
+      <user-details id="userPanel" [user]="user"></user-details>
+      <div id="resultsPanelMainContent">
+        <repo-filter
+          [repoCount]="repoCount"
+          [includeForkedRepos]="includeForkedRepos"
+          [includeNonOwnedRepos]="includeNonOwnedRepos"
+          (onFilterChanged)="onFilterChanged($event)">
+        </repo-filter>
+        <results-table [langs]="langs"></results-table>
       </div>
     </div>
   </div>
