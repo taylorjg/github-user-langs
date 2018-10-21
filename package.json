@@ -1,6 +1,6 @@
 {
   "name": "github-user-langs",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "heroku-postbuild": "npm run build && cp -r dist/github-user-langs server/public"
+    "heroku-postbuild": "npm run build --prod && cp -r dist/github-user-langs server/public"
   },
   "private": true,
   "dependencies": {
