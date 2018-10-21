@@ -18,12 +18,12 @@ jobs:
       - run:
           command: node mockserver
           background: true
-      - run: node_modules/.bin/ng e2e --configuration mock
+      - run: node_modules/.bin/ng e2e --prod --configuration mock
       - run: killall -QUIT node
       - run:
           command: TOKEN=$GITHUB_API_TOKEN node server
           background: true
-      - run: node_modules/.bin/ng e2e
+      - run: node_modules/.bin/ng e2e --prod
   deploy-job:
     docker:
       - image: circleci/node:8.12-stretch-browsers
