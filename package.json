@@ -1,6 +1,7 @@
 {
   "name": "github-user-langs",
-  "version": "0.1.5",
+  "description": "Display a breakdown of programming languages across a GitHub user's repositories",
+  "version": "0.1.6",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

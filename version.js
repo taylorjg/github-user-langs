@@ -1,1 +1,3 @@
-export { version } from './package.json';
+module.exports = {
+  version: require('./package.json').version
+};

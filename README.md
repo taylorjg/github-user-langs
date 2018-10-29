@@ -2,9 +2,23 @@
 
 # Description
 
-Display a breakdown of languages across a GitHub user's repositories.
+Display a breakdown of programming languages across a GitHub user's repositories.
 
-# Example
+# Technologies
+
+This project makes use of the following technologies:
+
+* [GitHub GraphQL API v4](https://developer.github.com/v4/)
+* [Node.js](https://nodejs.org/) / [Express](https://expressjs.com/)
+* [Angular 6.x](https://angular.io/)
+    * Angular unit tests
+    * Angular e2e tests
+    * [ng-apimock](https://mdasberg.github.io/ng-apimock/)
+* [Ramda](https://ramdajs.com/)
+* [CircleCI 2.0](https://circleci.com/) for CI/CD
+* [Heroku](https://www.heroku.com/) for deployment
+
+# Examples
 
 ## Command line interface
 
@@ -25,7 +39,3 @@ Batchfile...........00.040%
 https://github-user-langs.herokuapp.com/index.html?username=quezlatch
 
 ![Web App screenshot](screenshots/WebApp.png)
-
-# Links
-
-* [GraphQL API v4](https://developer.github.com/v4/)

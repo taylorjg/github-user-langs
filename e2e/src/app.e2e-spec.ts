@@ -1,5 +1,5 @@
 import { AppPage } from './app.po';
-import { version } from '../../version2';
+import { version } from '../../version';
 
 describe('github-user-langs', () => {
 
