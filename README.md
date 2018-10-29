@@ -34,6 +34,8 @@ Shell...............00.175%
 Batchfile...........00.040%
 ```
 
+In the above command, `token` is a [GitHub personal access token](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+
 ## Web App
 
 https://github-user-langs.herokuapp.com/index.html?username=quezlatch
