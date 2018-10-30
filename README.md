@@ -10,7 +10,7 @@ This project makes use of the following technologies:
 
 * [GitHub GraphQL API v4](https://developer.github.com/v4/)
 * [Node.js](https://nodejs.org/) / [Express](https://expressjs.com/)
-* [Angular 6.x](https://angular.io/)
+* [Angular 7.x](https://angular.io/)
     * Angular unit tests
     * Angular e2e tests
     * [ng-apimock](https://mdasberg.github.io/ng-apimock/)
