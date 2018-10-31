@@ -1,4 +1,5 @@
 import { AppPage } from './app.po';
+import * as ngApimock from '../../.tmp/ngApimock/protractor.mock.js';
 
 describe('github-user-langs', () => {
 
@@ -12,5 +13,9 @@ describe('github-user-langs', () => {
     page.navigateTo('anything');
     expect(page.getErrorPanelErrorMessage()).toContain('418');
     expect(page.getErrorPanelErrorMessage()).toContain('teapot');
+  });
+
+  it('TODO: e2e mock test that requires a call to ngApimock.selectScenario()', () => {
+    ngApimock.selectScenario('userLangs', 'error');
   });
 });

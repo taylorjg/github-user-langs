@@ -1,12 +1,12 @@
 {
-    "expression": "/api/userLangs\/(?:[a-zA-Z0-9-]){1,39}",
-    "method": "GET",
-    "name": "userLangs",
-    "responses": {
-      "error": {
-        "default": true,
-        "status": 418,
-        "statusText": "I'm a teapot"
-      }
+  "expression": "/api/userLangs\/(?:[a-zA-Z0-9-]){1,39}",
+  "method": "GET",
+  "name": "userLangs",
+  "responses": {
+    "error": {
+      "default": true,
+      "status": 418,
+      "statusText": "I'm a teapot"
     }
   }
+}
